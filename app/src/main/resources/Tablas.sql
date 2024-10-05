@@ -3,6 +3,18 @@
 
 set search_path = 'Esquema1';
 
+CREATE OR REPLACE FUNCTION uppercase_cliente()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.cliente := UPPER(NEW.cliente);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_uppercase_cliente BEFORE INSERT ON cliente
+FOR EACH ROW
+EXECUTE PROCEDURE uppercase_cliente();
+
 CREATE OR REPLACE Procedure exploushon(in par1 integer ,out par2 VARCHAR(10)) AS $$
 BEGIN 
     IF par1 = 1 THEN
