@@ -3,6 +3,27 @@
 
 set search_path = 'Esquema1';
 
+CREATE OR REPLACE Procedure exploushon(in par1 integer ,out par2 VARCHAR(10)) AS $$
+BEGIN 
+    IF par1 = 1 THEN
+        par2 := 'hola';
+    ELSE
+        par2 := 'no es 1';
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION saludar(p_numero integer)
+RETURNS text AS $$
+BEGIN IF p_numero = 1 THEN
+        RETURN 'hola';
+    ELSE
+        RETURN 'no es 1';
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+
 CREATE TABLE Cliente (
     nro_cliente INT NOT NULL,
     apellido VARCHAR(50) NOT NULL,
