@@ -10,49 +10,30 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class SQLDiff {
+    public static void main(String[] args) throws SQLException {
+        Connector post = new Connector();
+        post.configInit("app/src/main/resources/user1.properties");
+        System.out.println("Configuracion Inicial Lista");
+        post.addConnection();
+        System.out.println("Conexion Lista");
+        post.changeAutoCommit(false);
+        System.out.println("AutoCommit Listo");
+        Connection connection = post.get_connection();
 
-    public static void main(String[] args) {
 
-        Properties propiedades = new Properties();
+        String[] tipo = { "TABLE", "COLUMN" };
+        DatabaseMetaData metaData = connection.getMetaData();
 
-        // Load database driver if not already loaded.
-        String url;
-        String driver;
-        String user;
-        String password;
-        Connection connection = null;
-        CallableStatement call_st = null;
+        ResultSet resultSetTables = metaData.getTables(null, "repaso2", null, tipo);
 
-        try {
-            propiedades.load(new FileInputStream("../../resources/config.properties"));
+        System.out.println(" Tablas de la base de datos ");
+        while (resultSetTables.next()) {
+            String actual = resultSetTables.getString(3);
+            System.out.println("\n Nombre de tabla: " + actual + "\n");
 
-            url = propiedades.getProperty("db1_url");
-            driver = propiedades.getProperty("db1_driver");
-            user = propiedades.getProperty("db1_user");
-            password = propiedades.getProperty("db1_password");
-
-            Class.forName(driver);
-            connection = DriverManager.getConnection(url, user, password);
-
-            String[] tipo = { "TABLE", "COLUMN" };
-            DatabaseMetaData metaData = connection.getMetaData();
-
-            ResultSet resultSetTables = metaData.getTables(null, "repaso2", null, tipo);
-            
-            System.out.println(" Tablas de la base de datos ");
-            while (resultSetTables.next()) {
-                String actual = resultSetTables.getString(3);
-                System.out.println("\n Nombre de tabla: " + actual + "\n");
-                
-            }
-
-            resultSetTables.close();
-            connection.close();
-        } catch (SQLException e) {
-            System.out.println("sqlex" + e.getMessage());
-        } catch (Exception s) {
-            System.out.println("Algo salio mal");
         }
 
+        resultSetTables.close();
+        connection.close();
     }
 }

@@ -29,3 +29,8 @@ replay_pid*
 # Ignore Gradle build output directory
 build
 config.properties
+user1.properties
+
+
+.idea
+bin
