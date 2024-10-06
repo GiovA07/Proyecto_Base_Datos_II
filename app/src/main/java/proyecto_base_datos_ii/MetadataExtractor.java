@@ -1,6 +1,6 @@
 package proyecto_base_datos_ii;
 
-public class DatabaseMetadataExtractor {
+public class MetadataExtractor {
 
     public void extractMetadata() {
     }

@@ -71,4 +71,23 @@ public class Proc_manager {
 
     }
 
+    public void captureTriData() throws SQLException {
+        
+        Statement statement = connection.createStatement();
+
+        String query = "SELECT * FROM information_schema.triggers;";
+        ResultSet resultSet = statement.executeQuery(query);
+
+        while (resultSet.next()) {
+            System.out.println("\nTrigger Name: " + resultSet.getString(3));
+            System.out.println("Trigger Table: " + resultSet.getString(7));
+            System.out.println("Trigger Schem: " + resultSet.getString(2));
+            System.out.println("Trigger Action: " + resultSet.getString(4));
+            System.out.println("Action Momment: " + resultSet.getString(12));
+            // System.out.println("Trigger Function: " + resultSet.getString(10));
+        }
+        resultSet.close();
+
+    }
+
 }
