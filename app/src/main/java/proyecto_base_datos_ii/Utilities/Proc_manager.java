@@ -1,41 +1,65 @@
 package proyecto_base_datos_ii.Utilities;
 
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Proc_manager {
 
     private SqlTypeMap  types;
+    private Connection connection;
+    private DatabaseMetaData metaData;
 
-    public Proc_manager() {
+
+    public Proc_manager(Connection connection) throws SQLException {
+        this.connection = connection;
         this.types  = new SqlTypeMap();
+        this.metaData = this.connection.getMetaData();
     }
 
-    public void captureFuncData(ResultSet func, DatabaseMetaData metaData) throws SQLException  {
-        while (func.next()) {
-            String f = func.getString("FUNCTION_NAME");
-            String ff = func.getString("FUNCTION_TYPE");
-            System.out.println("\nfuncion = " + f);
-            System.out.println("funcion type = " + ff);
+
+    public Set<String> getSchemas() throws SQLException {
+        Set<String> schemas = new HashSet<>();
+        DatabaseMetaData metaData = connection.getMetaData();
+        ResultSet rs = metaData.getSchemas();
+
+        while (rs.next()) {
+            String schemaName = rs.getString("TABLE_SCHEM");
+            if(!schemaName.equals("pg_catalog")  && !schemaName.equals("public") &&  !schemaName.equals("information_schema")){
+
+                schemas.add(schemaName);
+            }
+        }
+        rs.close();
+        return schemas;
+    }
+
+    public void captureFuncData(String schema) throws SQLException  {
+        ResultSet funcs = metaData.getFunctions(null, schema, "%");
+
+        while (funcs.next()) {
+            String f = funcs.getString("FUNCTION_NAME");
+            // String ff = funcs.getString("FUNCTION_TYPE");
+
             String[] type = {"NO C","IN","INOUT","OUT","RETORNO","RESULSET"};
-            ResultSet r = metaData.getFunctionColumns(null, "Esquema1", f, "%");
+            ResultSet r = metaData.getFunctionColumns(null,schema, f, "%");
             while (r.next()) {
                 System.out.println("\nparametro = "+ r.getString(4));
                 System.out.println("typo = "+ type[r.getInt(5)]);
                 int n = r.getInt(6);
                 System.out.println("Data_type = "+ types.getType(n));
             }
-            r.close();     
+            r.close();
         }
     }
 
-    public void captureProcData(ResultSet proc, DatabaseMetaData metaData) throws SQLException  {
-        while (proc.next()) {
-            String f = proc.getString("PROCEDURE_NAME");
+    public void captureProcData(String schema) throws SQLException  {
+        ResultSet procs = metaData.getProcedures(null, schema, "%");
+        while (procs.next()) {
+            String f = procs.getString("PROCEDURE_NAME");
             System.out.println("\nprocedimiento = " + f);
             String[] type = {"NO C","IN","INOUT","OUT","RETORNO","RESULSET"};
-            ResultSet r = metaData.getProcedureColumns(null, "Esquema1", f, "%");
+            ResultSet r = metaData.getProcedureColumns(null, schema, f, "%");
             while (r.next()) {
                 System.out.println("\nparametro = "+ r.getString(4));
                 System.out.println("typo = "+ type[r.getInt(5)]);

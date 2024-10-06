@@ -1,17 +1,14 @@
 package proyecto_base_datos_ii;
 
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.util.Set;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.DatabaseMetaData;
 
 import proyecto_base_datos_ii.Utilities.Proc_manager;
-import proyecto_base_datos_ii.Utilities.Trigger;
 
 public class SQLDiff {
 
-    private static Proc_manager procMan = new Proc_manager();
+    private static Proc_manager procMan;
 
 
     public static void main(String[] args) throws SQLException {
@@ -24,15 +21,15 @@ public class SQLDiff {
         System.out.println("AutoCommit Listo\n");
         Connection connection = post.get_connection();
 
-        DatabaseMetaData metaData = connection.getMetaData();
-        ResultSet fun = metaData.getFunctions(null, "Esquema1", "%");
-        ResultSet pro = metaData.getProcedures(null, "Esquema1", "%");
+        procMan = new Proc_manager(connection);
 
-        procMan.captureFuncData(fun, metaData);
-        procMan.captureProcData(pro, metaData);
+        Set<String> setSchemas = procMan.getSchemas();
+        for (String string : setSchemas) {
+            System.out.println(string);
+            procMan.captureFuncData(string);
+            procMan.captureProcData(string);
+        }
 
-        pro.close();
-        fun.close();
         connection.close();
     }
 }
