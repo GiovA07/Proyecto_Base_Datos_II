@@ -16,22 +16,22 @@ public class InformPrinter {
             int b = funcSection.length();
             int c = procSection.length();
 
-            if (a == 35 && b == 38 && c == 43)
+            if (a == 35 && b == 38 && c == 56)
                 fw.write(init + " No se encontraron diferencias, bases de datos compatibles");
-            else if (a == 35 && b == 38 && c >= 43)
+            else if (a == 35 && b == 38 && c >= 56)
                 fw.write(init + procSection);
-            else if (a == 35 && b >= 38 && c == 43)
+            else if (a == 35 && b >= 38 && c == 56)
                 fw.write(init + funcSection);
-            else if (a == 35 && b >= 38 && c >= 43)
+            else if (a == 35 && b >= 38 && c >= 56)
                 fw.write(init + funcSection + procSection);
             
-            else if (a >= 35 && b == 38 && c == 43)
+            else if (a >= 35 && b == 38 && c == 56)
                 fw.write(init + tableSection);
-            else if (a >= 35 && b == 38 && c >= 43)
+            else if (a >= 35 && b == 38 && c >= 56)
                 fw.write(init + tableSection + procSection);
-            else if (a >= 35 && b >= 38 && c == 43)
+            else if (a >= 35 && b >= 38 && c == 56)
                 fw.write(init + tableSection + funcSection);
-            else if (a >= 35 && b >= 38 && c >= 43)
+            else if (a >= 35 && b >= 38 && c >= 56)
                 fw.write(init + tableSection + funcSection + procSection);
 
             fw.close();
