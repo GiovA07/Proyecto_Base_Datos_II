@@ -46,7 +46,7 @@ public class MetadataExtractor {
             ResultSet columns = metaData.getColumns(null, nameSchema, tableName, "%");
 
             Set<String> primaryKeys = get_primarysKeys(metaData,nameSchema,tableName);
-            Map<String, ForeingKey> foreignKeys = get_foreingsKeys(metaData,nameSchema,tableName);
+            Map<String, ForeignKey> foreignKeys = get_foreingsKeys(metaData,nameSchema,tableName);
             List<Trigger> trList = get_TriData(tableName, nameSchema);
 
             while (columns.next()) {
@@ -97,13 +97,13 @@ public class MetadataExtractor {
         return primaryKeys;
     }
 
-    private Map<String, ForeingKey> get_foreingsKeys(DatabaseMetaData  metaData, String nameSchema, String tableName) throws SQLException {
-        Map<String, ForeingKey> foreignKeys =  new HashMap<>();
+    private Map<String, ForeignKey> get_foreingsKeys(DatabaseMetaData  metaData, String nameSchema, String tableName) throws SQLException {
+        Map<String, ForeignKey> foreignKeys =  new HashMap<>();
 
         ResultSet fk = metaData.getImportedKeys(null, nameSchema, tableName);
         while (fk.next()) {
             String foreinKey = fk.getString("FKCOLUMN_NAME");
-            ForeingKey foreignKey = new ForeingKey();
+            ForeignKey foreignKey = new ForeignKey();
             foreignKey.setName(fk.getString("FK_NAME"));
             foreignKey.setTableReference(fk.getString("PKTABLE_NAME"));
             foreignKey.setColumnReference(fk.getString("PKCOLUMN_NAME"));
@@ -115,7 +115,7 @@ public class MetadataExtractor {
     }
 
     private List<Trigger> get_TriData(String table, String schema) throws SQLException {
-        
+
         Statement statement = connection.createStatement();
         List<Trigger> trigs = new ArrayList<>();
 
@@ -123,7 +123,7 @@ public class MetadataExtractor {
         ResultSet resultSet = statement.executeQuery(query);
 
         while (resultSet.next()) {
-            
+
             String name = resultSet.getString(3);
             String tableN = resultSet.getString(7);
             // String schem = resultSet.getString(2);

@@ -17,6 +17,9 @@ public class Schema {
     }
 
     public String getName() {return name;}
+    public List<Table> getTables() {return tables;}
+    public List<Function> getFunctions() {return functions;}
+    public List<Procedure> getProcedures() {return procedures;}
 
     public void setProcedures(List<Procedure> procedures) {this.procedures = procedures;}
     public void setFunctions(List<Function> functions) {this.functions = functions;}
@@ -28,5 +31,33 @@ public class Schema {
     public void printTables() { System.out.println(tables);}
 
 
+    private StringBuilder diferences = new StringBuilder();
+    public String compareTo(Schema other) {
+        if (other == null)
+            return this.tables.toString() + this.functions.toString() + this.procedures.toString();
 
+        List<Table> othTables = other.getTables();
+        List<Function> othFunctions = other.getFunctions();
+        List<Procedure> othProcedures = other.getProcedures();
+
+        tablesCompare(tables, othTables, this.name);
+        tablesCompare(othTables, tables, other.getName());
+
+        return diferences.toString();
+    }
+
+    public void tablesCompare(List<Table> first, List<Table> second, String sch) {
+        for(Table tab: first) {
+            boolean isEQ = false;
+            for(Table tab2: second) {
+                if (tab.getName().equals(tab2.getName()))
+                    isEQ = true;
+            }
+            if (!isEQ) {
+                diferences.append("El schema: " + sch + " contine particularmente la tabla\n");
+                diferences.append(tab);
+            }
+        }
+    }
 }
+

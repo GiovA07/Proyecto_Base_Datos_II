@@ -27,9 +27,7 @@ public class SQLDiff {
         metadataExtractor.captureInfoTables(schema);
         metadataExtractor.captureMethodsInfo(schema);
         schema.printTables();
-        schema.printMethods();
-
-        printer.printFile();
+        schema.printMethods();        printer.printFile();
 
         connection.close();
     }
