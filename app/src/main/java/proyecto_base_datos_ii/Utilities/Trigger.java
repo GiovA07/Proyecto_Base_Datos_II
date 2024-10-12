@@ -25,7 +25,7 @@ public class Trigger {
 
 
     public String toString() {
-        return "Trigger:\n\t\t|" +
+        return "Trigger: " +
         "name=" + name + '|' +
         ", triggerMoment=" + moment + '|' +
         ", triggerAction=" + action + "|\n";

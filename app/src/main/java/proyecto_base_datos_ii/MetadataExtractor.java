@@ -126,10 +126,10 @@ public class MetadataExtractor {
             
             String name = resultSet.getString(3);
             String tableN = resultSet.getString(7);
-            String schem = resultSet.getString(2);
+            // String schem = resultSet.getString(2);
             String action = resultSet.getString(4);
             String moment = resultSet.getString(12);
-            if (tableN == table && schem == schema)
+            if (tableN.equals(table))
                 trigs.add(new Trigger(name, action, moment));
         }
 

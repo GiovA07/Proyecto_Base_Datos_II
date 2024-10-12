@@ -23,8 +23,8 @@ public class Table {
 
     @Override
     public String toString() {
-        return "Table: \n\t " + tableName + '\n' +
-            "Columns=" + columns +'\n' +
+        return "Table: " + tableName + '\n' +
+             columns +'\n' +
              triggers +'\n';
     }
 
