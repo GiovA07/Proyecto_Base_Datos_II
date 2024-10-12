@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SqlTypeMap {
-    private Map<Integer, String> sqlTypeMap = new HashMap<>();
+    private Map<Integer, String> sqlTypeMap;
 
+    
     public SqlTypeMap() {
+        this.sqlTypeMap = new HashMap<>();
 
         sqlTypeMap.put(Types.BIT, "BIT");
         sqlTypeMap.put(Types.TINYINT, "TINYINT");
@@ -46,8 +48,6 @@ public class SqlTypeMap {
         sqlTypeMap.put(Types.NCLOB, "NCLOB");
         sqlTypeMap.put(Types.SQLXML, "SQLXML");
 
-        // You can now use the sqlTypeMap to retrieve the SQL type name by its code
-        // For example:
     }
 
     public String getType(int n) {

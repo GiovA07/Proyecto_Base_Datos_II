@@ -1,93 +1,66 @@
 package proyecto_base_datos_ii.Utilities;
 
 import java.sql.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Proc_manager {
 
-    private SqlTypeMap  types;
-    private Connection connection;
+    private SqlTypeMap valDataTypes;
     private DatabaseMetaData metaData;
+    private String[] ioDataType = {"NO C","IN","INOUT","OUT","RETORNO","RESULSET"};
 
 
     public Proc_manager(Connection connection) throws SQLException {
-        this.connection = connection;
-        this.types  = new SqlTypeMap();
-        this.metaData = this.connection.getMetaData();
+        this.valDataTypes = new SqlTypeMap();
+        this.metaData = connection.getMetaData();
     }
 
-
-    public Set<String> getSchemas() throws SQLException {
-        Set<String> schemas = new HashSet<>();
-        DatabaseMetaData metaData = connection.getMetaData();
-        ResultSet rs = metaData.getSchemas();
-
-        while (rs.next()) {
-            String schemaName = rs.getString("TABLE_SCHEM");
-            if(!schemaName.equals("pg_catalog")  && !schemaName.equals("public") &&  !schemaName.equals("information_schema")){
-
-                schemas.add(schemaName);
-            }
-        }
-        rs.close();
-        return schemas;
-    }
-
-    public void captureFuncData(String schema) throws SQLException  {
+    public List<Function> captureFuncData(String schema) throws SQLException  {
         ResultSet funcs = metaData.getFunctions(null, schema, "%");
-
-        while (funcs.next()) {
-            String f = funcs.getString("FUNCTION_NAME");
-            // String ff = funcs.getString("FUNCTION_TYPE");
-
-            String[] type = {"NO C","IN","INOUT","OUT","RETORNO","RESULSET"};
-            ResultSet r = metaData.getFunctionColumns(null,schema, f, "%");
-            while (r.next()) {
-                System.out.println("\nparametro = "+ r.getString(4));
-                System.out.println("typo = "+ type[r.getInt(5)]);
-                int n = r.getInt(6);
-                System.out.println("Data_type = "+ types.getType(n));
-            }
-            r.close();
-        }
-    }
-
-    public void captureProcData(String schema) throws SQLException  {
-        ResultSet procs = metaData.getProcedures(null, schema, "%");
-        while (procs.next()) {
-            String f = procs.getString("PROCEDURE_NAME");
-            System.out.println("\nprocedimiento = " + f);
-            String[] type = {"NO C","IN","INOUT","OUT","RETORNO","RESULSET"};
-            ResultSet r = metaData.getProcedureColumns(null, schema, f, "%");
-            while (r.next()) {
-                System.out.println("\nparametro = "+ r.getString(4));
-                System.out.println("typo = "+ type[r.getInt(5)]);
-                int n = r.getInt(6);
-                System.out.println("Data_type = "+ types.getType(n));
-            }
-            r.close();
-        }
-
-    }
-
-    public void captureTriData() throws SQLException {
+        List<Function> fList = new ArrayList<>();
         
-        Statement statement = connection.createStatement();
+        while (funcs.next()) {
+            List<Param> fparams = new ArrayList<>();
+            String currFunc = funcs.getString("FUNCTION_NAME");
+            String retType = valDataTypes.getType(funcs.getInt("FUNCTION_TYPE"));
 
-        String query = "SELECT * FROM information_schema.triggers;";
-        ResultSet resultSet = statement.executeQuery(query);
-
-        while (resultSet.next()) {
-            System.out.println("\nTrigger Name: " + resultSet.getString(3));
-            System.out.println("Trigger Table: " + resultSet.getString(7));
-            System.out.println("Trigger Schem: " + resultSet.getString(2));
-            System.out.println("Trigger Action: " + resultSet.getString(4));
-            System.out.println("Action Momment: " + resultSet.getString(12));
-            // System.out.println("Trigger Function: " + resultSet.getString(10));
+            ResultSet params = metaData.getFunctionColumns(null, schema, currFunc, "%");
+            while (params.next()) {
+                String pname = params.getString("COLUMNS_NAME");
+                String ptype = ioDataType[params.getInt("COLUMN_TYPE")];
+                String pdtype = valDataTypes.getType(params.getInt("DATA_TYPE"));
+                fparams.add(new Param(pname, ptype, pdtype));
+            }
+            params.close();
+            fList.add(new Function(currFunc, retType, fparams));
         }
-        resultSet.close();
-
+        funcs.close();
+        return fList;
     }
+
+    public List<Procedure> captureProcData(String schema) throws SQLException  {
+        ResultSet procs = metaData.getProcedures(null, schema, "%");
+        List<Procedure> pList = new ArrayList<>();
+
+        while (procs.next()) {
+            List<Param> pParams = new ArrayList<>();
+            String currProc = procs.getString("PROCEDURE_NAME");
+            String retType = valDataTypes.getType(procs.getInt("PROCEDURE_TYPE"));
+
+            ResultSet params = metaData.getProcedureColumns(null, schema, currProc, "%");
+            while (params.next()) {
+                String pname = params.getString("COLUMNS_NAME");
+                String ptype = ioDataType[params.getInt("COLUMN_TYPE")];
+                String pdtype = valDataTypes.getType(params.getInt("DATA_TYPE"));
+                pParams.add(new Param(pname, ptype, pdtype));
+            }
+            params.close();
+            pList.add(new Procedure(currProc, retType, pParams));
+        }
+        procs.close();
+        return pList;
+    }
+
 
 }

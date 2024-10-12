@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Schema {
-    private  String name;
-    private List<Procedure> procedures;
+    private String name;
     private List<Table> tables;
-    private  List<Function> functions;
+    private List<Function> functions;
+    private List<Procedure> procedures;
 
     public Schema(String name) {
         this.name = name;

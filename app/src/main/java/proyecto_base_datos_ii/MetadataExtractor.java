@@ -1,39 +1,33 @@
 package proyecto_base_datos_ii;
 
-import java.sql.*;
-import java.util.Set;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 
-import proyecto_base_datos_ii.Utilities.Column;
-import proyecto_base_datos_ii.Utilities.ForeingKey;
-import proyecto_base_datos_ii.Utilities.Proc_manager;
-import proyecto_base_datos_ii.Utilities.Schema;
-import proyecto_base_datos_ii.Utilities.Table;
+import java.sql.*;
+import java.util.Map;
+import java.util.Set;
+import java.util.List;
+import java.util.HashSet;
+import java.util.HashMap;
+import java.util.ArrayList;
+
+import proyecto_base_datos_ii.Utilities.*;
+
 
 public class MetadataExtractor {
 
     private Connection connection;
     private static Proc_manager procMan;
 
-    public MetadataExtractor(Connection con) {
+    public MetadataExtractor(Connection con) throws SQLException {
         connection = con;
+        procMan = new Proc_manager(con);
     }
 
-    public void recupere() throws SQLException {
-        Table tab = new Table(connection);
-        procMan = new Proc_manager(connection);
-        Set<String> setSchemas = procMan.getSchemas();
-        for (String string : setSchemas) {
-            System.out.println(string);
-            procMan.captureFuncData(string);
-            procMan.captureProcData(string);
-            procMan.captureTriData();
-            tab.captureTableData(string);
-        }
-    }
+    public void captureMethodsInfo(Schema shcema) throws SQLException {
+        String sName = shcema.getName();
 
+        shcema.setFunctions(procMan.captureFuncData(sName));
+        shcema.setProcedures(procMan.captureProcData(sName));
+    }
 
     public void captureInfoTables(Schema schema) throws SQLException {
         String nameSchema = schema.getName();
@@ -46,13 +40,14 @@ public class MetadataExtractor {
         while (r.next()) {
             String tableName = r.getString("TABLE_NAME");
 
-            table = new Table(connection);
+            table = new Table();
             table.setName(tableName);
 
             ResultSet columns = metaData.getColumns(null, nameSchema, tableName, "%");
 
             Set<String> primaryKeys = get_primarysKeys(metaData,nameSchema,tableName);
             Map<String, ForeingKey> foreignKeys = get_foreingsKeys(metaData,nameSchema,tableName);
+            List<Trigger> trList = get_TriData(tableName, nameSchema);
 
             while (columns.next()) {
                 Column column = new Column();
@@ -83,6 +78,7 @@ public class MetadataExtractor {
                 column.setUniqe(isUnique);
 
                 table.addColumn(column);
+                table.setTriggers(trList);
             }
             columns.close();
             schema.addTable(table);
@@ -116,6 +112,29 @@ public class MetadataExtractor {
         fk.close();
         return foreignKeys;
 
+    }
+
+    private List<Trigger> get_TriData(String table, String schema) throws SQLException {
+        
+        Statement statement = connection.createStatement();
+        List<Trigger> trigs = new ArrayList<>();
+
+        String query = "SELECT * FROM information_schema.triggers;";
+        ResultSet resultSet = statement.executeQuery(query);
+
+        while (resultSet.next()) {
+            
+            String name = resultSet.getString(3);
+            String tableN = resultSet.getString(7);
+            String schem = resultSet.getString(2);
+            String action = resultSet.getString(4);
+            String moment = resultSet.getString(12);
+            if (tableN == table && schem == schema)
+                trigs.add(new Trigger(name, action, moment));
+        }
+
+        resultSet.close();
+        return trigs;
     }
 
 }

@@ -7,7 +7,7 @@ public class InformPrinter {
     private String init = "\n - - - Diferencias entre las Bases de datos - - - \n\n";
     private String tableSection = "\n\n - - - Tablas que difieren - - -\n";
     private String funcSection = "\n\n - - - Funciones que difieren - - -\n";
-    private String procSection = "\n\n Procedimientos almacenados que difieren\n";
+    private String procSection = "\n\n - - - Procedimientos almacenados que difieren - - - \n";
 
     public void printFile() {
         try {
