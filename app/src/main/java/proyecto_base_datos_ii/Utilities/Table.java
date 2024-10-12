@@ -1,30 +1,42 @@
 package proyecto_base_datos_ii.Utilities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import java.sql.*;
 
 public class Table {
     private String tableName;
-    private List<String> columns;
+    private List<Column> columns;
     private Connection connection;
+    private List<Trigger> triggers;
+
     private DatabaseMetaData metaData;
 
     public Table(Connection con) throws SQLException{
         this.connection = con;
         this.metaData = con.getMetaData();
+        this.columns = new ArrayList<>();
+        this.triggers = new ArrayList<>();
     }
+
+    public void setName(String name){this.tableName = name;}
+    public void addColumn(Column column){columns.add(column);}
+
 
     public void captureTableData(String schema) throws SQLException{
         String[] list = {"TABLE","VIEW","COLUMN","SYSTEM TABLE","ALIAS"};
         ResultSet r =  metaData.getTables(null, schema, null, list);
-        
+
         while (r.next()) {
             System.out.println("\nTabla: "+r.getString(3));
+
+
+
             ResultSet col =  metaData.getColumns(null, schema, r.getString(3),"%");
             ResultSet fk = metaData.getCrossReference(null, null, null, null, schema, r.getString(3));
             ResultSet pk = metaData.getPrimaryKeys(null, schema, r.getString(3));
-            
+
             while (col.next()) {
                 System.out.println("Col name: "+col.getString(4));
                 System.out.println("Col type: "+col.getString(5));
@@ -37,7 +49,7 @@ public class Table {
             while (pk.next()) {
                 System.out.println("pk: "+pk.getString(4));
             }
-            
+
             while (fk.next()) {
                     System.out.println("fk_tab = "+ fk.getString(3));
                     System.out.println("fk_col = "+ fk.getString(8));
@@ -48,4 +60,12 @@ public class Table {
 
         r.close();
     }
+
+
+    @Override
+    public String toString() {
+        return "Table: " + tableName + '\n' +
+            "Columns=" + columns +'\n';
+    }
+
 }

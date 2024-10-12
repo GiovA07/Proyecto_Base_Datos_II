@@ -1,1 +1,4 @@
-...
+
+ - - - Diferencias entre las Bases de datos - - - 
+
+ No se encontraron diferencias, bases de datos compatibles

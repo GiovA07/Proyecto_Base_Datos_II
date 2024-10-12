@@ -3,7 +3,7 @@ package proyecto_base_datos_ii;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import proyecto_base_datos_ii.Utilities.InformPrinter;
+import proyecto_base_datos_ii.Utilities.*;
 
 
 public class SQLDiff {
@@ -21,9 +21,12 @@ public class SQLDiff {
         System.out.println("Configuracion Inicial Lista");
         connection = post.get_connection();
 
+        Schema  schema = new Schema("esquema1");
+
         metadataExtractor = new MetadataExtractor(connection);
-    
-        metadataExtractor.recupere();
+        metadataExtractor.captureInfoTables(schema);
+        schema.printTables();
+        // metadataExtractor.recupere();
 
         printer.printFile();
 
