@@ -12,4 +12,8 @@ public class Procedure {
         this.typeReturn = ret;
         this.params = params;
     }
+
+    public String toString() {
+        return "Procedure: "+ name + " ret-> "+ typeReturn + params + "\n";
+    }
 }

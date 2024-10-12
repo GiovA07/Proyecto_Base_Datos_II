@@ -27,7 +27,7 @@ public class Proc_manager {
 
             ResultSet params = metaData.getFunctionColumns(null, schema, currFunc, "%");
             while (params.next()) {
-                String pname = params.getString("COLUMNS_NAME");
+                String pname = params.getString("COLUMN_NAME");
                 String ptype = ioDataType[params.getInt("COLUMN_TYPE")];
                 String pdtype = valDataTypes.getType(params.getInt("DATA_TYPE"));
                 fparams.add(new Param(pname, ptype, pdtype));
@@ -50,7 +50,7 @@ public class Proc_manager {
 
             ResultSet params = metaData.getProcedureColumns(null, schema, currProc, "%");
             while (params.next()) {
-                String pname = params.getString("COLUMNS_NAME");
+                String pname = params.getString("COLUMN_NAME");
                 String ptype = ioDataType[params.getInt("COLUMN_TYPE")];
                 String pdtype = valDataTypes.getType(params.getInt("DATA_TYPE"));
                 pParams.add(new Param(pname, ptype, pdtype));

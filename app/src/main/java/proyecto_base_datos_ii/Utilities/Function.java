@@ -12,4 +12,8 @@ public class Function {
         this.typeReturn = ret;
         this.params = params;
     }
+
+    public String toString() {
+        return "Function: "+ name + " ret-> "+ typeReturn + params + "\n";
+    }
 }

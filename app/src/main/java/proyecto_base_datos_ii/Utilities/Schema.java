@@ -24,7 +24,7 @@ public class Schema {
     public void addTable(Table table) { tables.add(table); }
 
 
-
+    public void printMethods(){System.out.println(functions + "\n\n" + procedures);}
     public void printTables() { System.out.println(tables);}
 
 
