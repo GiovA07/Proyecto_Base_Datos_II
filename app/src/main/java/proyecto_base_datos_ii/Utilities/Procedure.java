@@ -14,7 +14,7 @@ public class Procedure {
     }
 
     public String toString() {
-        return name + params;
+        return name + params + " -> " + returnType;
     }
 
     @Override
