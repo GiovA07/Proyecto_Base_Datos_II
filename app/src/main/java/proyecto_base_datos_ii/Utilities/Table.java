@@ -45,6 +45,8 @@ public class Table {
         // Comparar columnas que solo estan en la segunda tabla
         compareMissingColumns(other, differences);
 
+        compareTriggers(other, differences);
+
         return differences.toString();
     }
 
@@ -96,6 +98,38 @@ public class Table {
         if (missingColumns.length() > 0) {
             differences.append("  * Las columnas diferentes de la tabla (" + tableName + ") del primer esquema son:\n")
                     .append(missingColumns);
+        }
+    }
+
+
+    private void compareTriggers(Table other, StringBuilder differences) {
+        List<Trigger> otherTriggers = other.triggers;
+
+        // Comparar triggers que existen en ambas tablas
+        for (Trigger trigger : triggers) {
+            if (otherTriggers.contains(trigger)) {
+                differences.append(" - El trigger ").append(trigger.getName()).append(" existe en ambas tablas.\n");
+            } else {
+                differences.append("  * El trigger ").append(trigger.getName()).append(" solo existe en la tabla del segundo esquema.\n");
+            }
+        }
+
+        // Comparar triggers que estan en la segunda tabla pero no en la primera
+        for (Trigger otherTrigger : otherTriggers) {
+            if (!triggers.contains(otherTrigger)) {
+                differences.append("  * El trigger ").append(otherTrigger.getName()).append(" no existe en la tabla del primer esquema. \n");
+            }
+        }
+
+        // Comparar diferencias en triggers
+        for (Trigger trigger : triggers) {
+            for (Trigger otherTrigger : otherTriggers) {
+                if (trigger.equals(otherTrigger)) {
+                    // Si son iguales, no hacemos nada
+                } else if (trigger.getName().equals(otherTrigger.getName())) {
+                    differences.append(trigger.differencesToString(otherTrigger));
+                }
+            }
         }
     }
 

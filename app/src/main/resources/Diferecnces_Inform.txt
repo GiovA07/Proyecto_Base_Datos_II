@@ -1,0 +1,75 @@
+
+El schema Esquema1 contine particularmente la tabla
+Table: producto
+{descripcion= VARCHAR 
+, precio= INTEGER 
+, stock_minimo= INTEGER 
+, cod_producto= INTEGER primary key unique 
+, stock_maximo= INTEGER 
+, cantidad= INTEGER 
+}
+[]
+
+El schema Esquema2 contine particularmente la tabla
+Table: categoria
+{nro_categoria= INTEGER primary key unique 
+, tasa= INTEGER 
+}
+[]
+Diferencias entre las tablas iguales de Esquema1 vs Esquema2:
+Ambos esquemas tienen la misma tabla (cliente)
+ - Ambas tablas tienen la misma columna (nro_cliente).
+ - Ambas tablas tienen la misma columna (apellido).
+ - Ambas tablas tienen la misma columna (direccion).
+ - Ambas tablas tienen la misma columna (telefono).
+ - Ambas tablas tienen la misma columna (nombre).
+ - El trigger trg_uppercase_cliente existe en ambas tablas.
+
+
+Ambos esquemas tienen la misma tabla (departamento)
+ - El número de columnas es diferente: 4 vs 3
+ - Ambas tablas tienen la misma columna (presupuesto).
+ - Ambas tablas tienen la misma columna (id_departamento).
+  * La columna (nro_dir) solo existe en la tabla del segundo esquema, no existe en la otra tabla.
+ - Ambas tablas tienen la misma columna (nombre_departamento).
+
+
+Ambos esquemas tienen la misma tabla (empleado)
+ - Ambas tablas tienen la misma columna (id_departamento).
+ - Ambas tablas tienen la misma columna (apellido).
+ - Ambas tablas tienen la misma columna (salario).
+ - Ambas tablas tienen la misma columna (fecha_ingreso).
+  -> Con las diferencias: Diferencia de tipo: TIMESTAMP vs DATE
+ - Ambas tablas tienen la misma columna (nombre).
+ - Ambas tablas tienen la misma columna (id_empleado).
+  -> Con las diferencias: Esta columna es autoincrementada?: false vs true
+
+
+Ambos esquemas tienen la misma tabla (factura)
+ - Ambas tablas tienen la misma columna (estado).
+  -> Con las diferencias: Esta columna puede ser null?: true vs false
+ - Ambas tablas tienen la misma columna (monto_total).
+ - Ambas tablas tienen la misma columna (nro_factura).
+  -> Con las diferencias: Diferencia de tipo: DOUBLE vs INTEGER
+ - Ambas tablas tienen la misma columna (nro_cliente).
+ - Ambas tablas tienen la misma columna (fecha_emision).
+  -> Con las diferencias: Diferencia de tipo: TIMESTAMP vs DATE
+
+
+Ambos esquemas tienen la misma tabla (propiedad)
+ - Ambas tablas tienen la misma columna (precio).
+ - Ambas tablas tienen la misma columna (nro_cliente).
+ - Ambas tablas tienen la misma columna (nro_propiedad).
+ - Ambas tablas tienen la misma columna (direccion).
+
+
+
+
+El schema Esquema1 contine particularmente la funcion 
+saludar[returnValue|RETORNO|VARCHAR, p_numero|IN|INTEGER] -> CHAR
+
+El schema Esquema1 contine particularmente la funcion 
+uppercase_cliente[returnValue|RETORNO|OTHER] -> CHAR
+
+El schema Esquema1 contine particularmente el procedmiento 
+exploushon[par1|IN|INTEGER, par2|RETORNO|VARCHAR] -> NUMERIC
