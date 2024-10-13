@@ -64,7 +64,6 @@ public class Column {
                 differences.append("En columna: " + name + " Tiene clave foranea: " + other.foreingKey.toString());
             }
 
-        differences.append("\n\n");
         return differences.toString();
     }
 

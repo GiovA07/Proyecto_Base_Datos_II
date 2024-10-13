@@ -52,7 +52,7 @@ public class Schema {
                     String tableDifferences = otb.compareTo(tb);
                     tempDifferences.append("Ambos esquemas tienen la misma tabla ("+ otb.getName() + ")\n");
                     if (!tableDifferences.trim().isEmpty())
-                        tempDifferences.append(tableDifferences);
+                        tempDifferences.append(tableDifferences).append("\n\n");
                 }
             }
         }

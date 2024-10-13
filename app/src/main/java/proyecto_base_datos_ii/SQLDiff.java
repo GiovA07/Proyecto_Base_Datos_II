@@ -33,6 +33,8 @@ public class SQLDiff {
 
         printer.printFile(schema.compareTo(schema2));
 
+        System.out.println(schema.compareTo(schema2));
+
         connection.close();
     }
 }
