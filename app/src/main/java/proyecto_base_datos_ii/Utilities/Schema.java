@@ -50,8 +50,9 @@ public class Schema {
             for (Table tb : tables) {
                 if (otb.getName().equals(tb.getName())) {
                     String tableDifferences = otb.compareTo(tb);
+                    tempDifferences.append("Ambos esquemas tienen la misma tabla ("+ otb.getName() + ")\n");
                     if (!tableDifferences.trim().isEmpty())
-                        tempDifferences.append(tableDifferences);
+                        tempDifferences.append(tableDifferences).append("\n\n");
                 }
             }
         }

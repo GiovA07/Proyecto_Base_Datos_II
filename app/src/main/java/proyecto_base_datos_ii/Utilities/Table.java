@@ -51,7 +51,7 @@ public class Table {
     // Metodo para comparar el número de columnas
     private void compareColumnCount(Table other, StringBuilder differences) {
         if (columns.size() != other.columns.size()) {
-            differences.append("El número de columnas es diferente: ")
+            differences.append(" - El número de columnas es diferente: ")
                        .append(columns.size())
                        .append(" vs ")
                        .append(other.columns.size())
@@ -68,17 +68,14 @@ public class Table {
                 Column column = columns.get(strColumn);
                 Column columnOther = otherColumnsMap.get(strColumn);
                 String diffColumns = column.compareTo(columnOther);
-
+                differences.append(" - Ambas tablas tienen la misma columna (" + strColumn + ").\n");
                 if (!diffColumns.trim().isEmpty()) {
-                    differences.append("Ambas tablas (" + tableName + ") tienen la columna: ")
-                            .append("(").append(strColumn).append(") ")
-                            .append("Diferencias:\n")
-                            .append(diffColumns);
+                    differences.append("  -> Con las diferencias: ").append(diffColumns);
                 }
             } else {
-                differences.append("La columna ")
+                differences.append("  * La columna ")
                         .append("(").append(strColumn).append(") ")
-                        .append("solo existe en la tabla (" + tableName + ") del primer esquema, no existe en la otra tabla.\n");
+                        .append("solo existe en la tabla del primer esquema, no existe en la otra tabla.\n");
             }
         }
     }
@@ -90,14 +87,14 @@ public class Table {
 
         for (String strColumn : otherColumnsMap.keySet()) {
             if (!columns.containsKey(strColumn)) {
-                missingColumns.append("La columna ")
+                missingColumns.append("  * La columna ")
                             .append(strColumn)
                             .append(" no existe en la tabla (" + tableName + ") del segundo esquema.\n");
             }
         }
 
         if (missingColumns.length() > 0) {
-            differences.append("Las columnas diferentes de la tabla (" + tableName + ") del segundo esquema son:\n")
+            differences.append("  * Las columnas diferentes de la tabla (" + tableName + ") del segundo esquema son:\n")
                     .append(missingColumns);
         }
     }
