@@ -1,23 +1,25 @@
 package proyecto_base_datos_ii.Utilities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Table {
     private String tableName;
-    private List<Column> columns;
+    private Map<String, Column> columns;
     private List<Trigger> triggers;
 
 
     public Table(){
-        this.columns = new ArrayList<>();
+        this.columns = new HashMap<>();
         this.triggers = new ArrayList<>();
     }
 
     public String getName() {return tableName;}
 
     public void setName(String name){this.tableName = name;}
-    public void addColumn(Column column){columns.add(column);}
+    public void addColumn(Column column){columns.put(column.getName(), column);}
 
     public void setTriggers(List<Trigger> trList) {
         this.triggers = trList;
@@ -31,45 +33,74 @@ public class Table {
     }
 
 
-
     public String compareTo(Table other) {
         StringBuilder differences = new StringBuilder();
-        if(columns.size() != other.columns.size()) {
-            differences.append("El numero de columnas es diferente: ").append(columns.size()).append(" vs ").append(other.columns.size() + "\n");
-        }
-        for (Column column : columns) {
-            boolean found = false;
-            Column columnEquals = null;
-            for (Column columnOther : other.columns) {
-                if(column.getName().equals(columnOther.getName())) {
-                    found = true;
-                    columnEquals = columnOther;
-                    break;
-                }
-            }
 
-            if(!found) {
-                differences.append("La columna ").append("(" + column.getName() + ")").append(" solo existe en la tabla del primer esquema, no existe en la otra tabla..\n");
-            } else {
-                differences.append("Ambas tablas tienen la columna: " + "(" + column.getName() + ")" + " Diferencias: \n");
-                differences.append(column.compareTo(columnEquals));
-            }
-        }
+        // Comparar el numero de columnas
+        compareColumnCount(other, differences);
 
-        differences.append("Las columnas diferentes de la tabla del segundo esquema son: ");
-        for (Column column : other.columns) {
-            for (Column columnOther : columns) {
-                if(!column.getName().equals(columnOther.getName())) {
-                    differences.append("La columna ").append(column.getName()).append(" no existe en la otra tabla\n");
-                    break;
-                }
-            }
-        }
+        // Comparar columnas en ambas tablas
+        compareCommonColumns(other, differences);
+
+        // Comparar columnas que solo estan en la segunda tabla
+        compareMissingColumns(other, differences);
 
         return differences.toString();
     }
 
+    // Metodo para comparar el número de columnas
+    private void compareColumnCount(Table other, StringBuilder differences) {
+        if (columns.size() != other.columns.size()) {
+            differences.append("El número de columnas es diferente: ")
+                       .append(columns.size())
+                       .append(" vs ")
+                       .append(other.columns.size())
+                       .append("\n");
+        }
+    }
 
+    // Metodo para comparar las columnas que existen en ambas tablas
+    private void compareCommonColumns(Table other, StringBuilder differences) {
+        Map<String, Column> otherColumnsMap = other.columns;
+
+        for (String strColumn : columns.keySet()) {
+            if (otherColumnsMap.containsKey(strColumn)) {
+                Column column = columns.get(strColumn);
+                Column columnOther = otherColumnsMap.get(strColumn);
+                String diffColumns = column.compareTo(columnOther);
+
+                if (!diffColumns.trim().isEmpty()) {
+                    differences.append("Ambas tablas tienen la columna: ")
+                            .append("(").append(strColumn).append(") ")
+                            .append("Diferencias:\n")
+                            .append(diffColumns);
+                }
+            } else {
+                differences.append("La columna ")
+                        .append("(").append(strColumn).append(") ")
+                        .append("solo existe en la tabla del primer esquema, no existe en la otra tabla.\n");
+            }
+        }
+    }
+
+    // Metodo para comparar las columnas que estan en la segunda tabla pero no en la primera
+    private void compareMissingColumns(Table other, StringBuilder differences) {
+        Map<String, Column> otherColumnsMap = other.columns;
+        StringBuilder missingColumns = new StringBuilder();
+
+        for (String strColumn : otherColumnsMap.keySet()) {
+            if (!columns.containsKey(strColumn)) {
+                missingColumns.append("La columna ")
+                            .append(strColumn)
+                            .append(" no existe en la otra tabla.\n");
+            }
+        }
+
+        if (missingColumns.length() > 0) {
+            differences.append("Las columnas diferentes de la tabla del segundo esquema son:\n")
+                    .append(missingColumns);
+        }
+    }
 
     public static void main(String[] args) {
         // Crear claves foráneas para usar en las columnas

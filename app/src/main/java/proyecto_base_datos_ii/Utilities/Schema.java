@@ -42,11 +42,29 @@ public class Schema {
 
         tablesCompare(tables, othTables, this.name);
         tablesCompare(othTables, tables, other.getName());
-        
-        for (Table otb : othTables)
-            for (Table tb : tables)
-                if (otb.getName().equals(tb.getName()))
-                    diferences.append(otb.compareTo(tb));
+
+        //ver si este cambio lo dejamos o no.
+        StringBuilder tempDifferences = new StringBuilder();
+
+        for (Table otb : othTables) {
+            for (Table tb : tables) {
+                if (otb.getName().equals(tb.getName())) {
+                    String tableDifferences = otb.compareTo(tb);
+                    if (!tableDifferences.trim().isEmpty())
+                        tempDifferences.append(tableDifferences);
+                }
+            }
+        }
+
+        if (tempDifferences.length() > 0)
+            diferences.append("Diferencias entre las tablas iguales de ")
+                       .append(this.getName())
+                       .append(" vs ")
+                       .append(other.getName())
+                       .append(":\n")
+                       .append(tempDifferences);
+        else
+            diferences.append("En las tablas que tienen en comun no existen diferencias.\n");
 
         funcCompare(functions, othFunctions, this.name);
         funcCompare(othFunctions, othFunctions, other.name);
@@ -70,7 +88,7 @@ public class Schema {
             }
         }
     }
-    
+
     public void procCompare(List<Procedure> first, List<Procedure> second, String sch) {
         for(Procedure pr: first) {
             boolean isEQ = false;
@@ -84,7 +102,7 @@ public class Schema {
             }
         }
     }
-    
+
     public void funcCompare(List<Function> first, List<Function> second, String sch) {
         for(Function fn: first) {
             boolean isEQ = false;
@@ -98,6 +116,6 @@ public class Schema {
             }
         }
     }
-    
+
 }
 
