@@ -12,10 +12,7 @@ public class Param {
     }
 
     public String toString() {
-        return
-        "name=" + name + '|' +
-        ", type_param=" + type_param + '|' +
-        ", type_data=" + type_data + "|";
+        return name + " " + type_param + " " + type_data;
     }
 
     @Override
