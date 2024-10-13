@@ -46,7 +46,7 @@ public class Proc_manager {
         List<Procedure> pList = new ArrayList<>();
 
         while (procs.next()) {
-            List<Param> pParams = new ArrayList<>();
+            Set<Param> pParams = new HashSet<>();
             String currProc = procs.getString("PROCEDURE_NAME");
             String retType = valDataTypes.getType(procs.getInt("PROCEDURE_TYPE"));
 

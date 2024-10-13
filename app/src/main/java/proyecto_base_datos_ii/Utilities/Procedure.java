@@ -5,10 +5,12 @@ import java.util.Set;
 public class Procedure {
     private String name;
     private Set<Param> params;
+    String returnType;
 
-    public Procedure(String name, Set<Param> params) {
+    public Procedure(String name, String returnType, Set<Param> params) {
         this.name = name;
         this.params = params;
+        this.returnType = returnType;
     }
 
     public String toString() {
@@ -22,6 +24,8 @@ public class Procedure {
         Procedure other = (Procedure) obj;
         
         if (!this.name.equals(other.name)) return false;
+        if (!this.returnType.equals(other.returnType)) return false;
+
         if (this.params.size() != other.params.size()) return false;
         return params.equals(other.params);
     }
@@ -45,6 +49,12 @@ public class Procedure {
             differences.append(other.name);
         }
 
+        if (!this.returnType.equals(other.returnType)){
+            differences.append("\n- Retorno: ");
+            differences.append(this.returnType);
+            differences.append(" vs. ");
+            differences.append(other.returnType);
+        }
 
         if (!this.params.equals(other.params)){
             differences.append("\n- Parámetros: ");
@@ -102,15 +112,17 @@ public class Procedure {
         params4.add(new Param("b", "IN", "String")); // Similar name, same type
 
         // Create Procedure objects
-        Procedure proc1 = new Procedure("procedureA", params1);
-        Procedure proc2 = new Procedure("procedureB", params2);
-        Procedure proc3 = new Procedure("procedureC", params3);
-        Procedure proc4 = new Procedure("procedureA", params4);
+        Procedure proc1 = new Procedure("procedureA", params1, "NULL");
+        Procedure proc2 = new Procedure("procedureB", params2, "NULL");
+        Procedure proc3 = new Procedure("procedureC", params3, "TRIGGER");
+        Procedure proc4 = new Procedure("procedureA", params4, "NULL");
+        Procedure proc5 = new Procedure("procedureA", params1, "NULL"); // same as proc1 
+        
 
         // Comparing procedures
-        System.out.println(proc1.differencesToString(proc1));
         System.out.println(proc1.differencesToString(proc2));
         System.out.println(proc1.differencesToString(proc3)); 
         System.out.println(proc1.differencesToString(proc4));
+        System.out.println(proc1.differencesToString(proc5));
     }
 }
