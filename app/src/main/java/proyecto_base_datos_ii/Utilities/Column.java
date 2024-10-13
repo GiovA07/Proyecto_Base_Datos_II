@@ -21,7 +21,7 @@ public class Column {
 
     @Override
     public String toString() {
-        return "Column: " + name + " " + type + " " + (autoincrement?"autoincrement ":"") +
+        return " " + type + " " + (autoincrement?"autoincrement ":"") +
          (primaryKey?"primary key ":"") + (unique?"unique ":"")  + (foreingKey!=null?"foreign key: "+foreingKey:"")+ '\n';
     }
 
