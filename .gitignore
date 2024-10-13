@@ -34,3 +34,6 @@ user1.properties
 
 .idea
 bin
+
+#report generated
+/app/src/main/resources/differences_report.txt

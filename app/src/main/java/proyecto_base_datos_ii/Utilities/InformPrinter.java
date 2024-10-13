@@ -7,7 +7,7 @@ public class InformPrinter {
 
     public void printFile(String res) {
         try {
-            FileWriter fw = new FileWriter("app/src/main/resources/Diferecnces_Inform.txt");
+            FileWriter fw = new FileWriter("app/src/main/resources/differences_report.txt");
             fw.write(res);
             fw.close();
         } catch (IOException e) {
