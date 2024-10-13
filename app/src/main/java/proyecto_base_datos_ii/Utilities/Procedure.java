@@ -112,11 +112,11 @@ public class Procedure {
         params4.add(new Param("b", "IN", "String")); // Similar name, same type
 
         // Create Procedure objects
-        Procedure proc1 = new Procedure("procedureA", params1, "NULL");
-        Procedure proc2 = new Procedure("procedureB", params2, "NULL");
-        Procedure proc3 = new Procedure("procedureC", params3, "TRIGGER");
-        Procedure proc4 = new Procedure("procedureA", params4, "NULL");
-        Procedure proc5 = new Procedure("procedureA", params1, "NULL"); // same as proc1 
+        Procedure proc1 = new Procedure("procedureA", "NULL", params1);
+        Procedure proc2 = new Procedure("procedureB", "NULL", params2);
+        Procedure proc3 = new Procedure("procedureC", "TRIGGER", params3);
+        Procedure proc4 = new Procedure("procedureA", "NULL", params4);
+        Procedure proc5 = new Procedure("procedureA", "NULL", params1); // same as proc1 
         
 
         // Comparing procedures
