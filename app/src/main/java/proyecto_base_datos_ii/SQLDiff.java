@@ -21,8 +21,8 @@ public class SQLDiff {
         System.out.println("Configuracion Inicial Lista");
         connection = post.get_connection();
 
-        Schema  schema = new Schema("esquema1");
-        Schema  schema2 = new Schema("esquema2");
+        Schema  schema = new Schema("Esquema1");
+        Schema  schema2 = new Schema("Esquema2");
 
         metadataExtractor = new MetadataExtractor(connection);
         metadataExtractor.captureInfoTables(schema);

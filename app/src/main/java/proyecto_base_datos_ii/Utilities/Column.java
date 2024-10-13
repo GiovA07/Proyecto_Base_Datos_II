@@ -7,6 +7,7 @@ public class Column {
     private ForeignKey foreingKey;
     private boolean primaryKey;
     private boolean unique;
+    private boolean isNullable;
 
 
     public void setName(String name){this.name = name;}
@@ -15,6 +16,7 @@ public class Column {
     public void setAutoincrement(boolean autoincrement){this.autoincrement = autoincrement;}
     public void setPrimaryKey(boolean primaryKey){this.primaryKey = primaryKey;}
     public void setUniqe(boolean unique){this.unique = unique;}
+    public void setNullable(boolean isNullable){this.isNullable = isNullable;}
     public void setForeingKey(ForeignKey fk){this.foreingKey = fk;}
 
     @Override
@@ -28,14 +30,7 @@ public class Column {
     public String compareTo(Column other) {
         StringBuilder differences = new StringBuilder();
 
-        if (!this.name.equals(other.name)) {
-            differences.append("Diferencia de Nombres de Columna: ").append(this.name)
-                       .append(" vs ").append(other.name).append("\n");
-
-        } else {
-
             if (!this.type.equals(other.type)) {
-                differences.append("Nombre de la Columna: ").append(this.name).append("\n");
                 differences.append("Diferencia de tipo: ").append(this.type)
                            .append(" vs ").append(other.type).append("\n");
             }
@@ -43,6 +38,11 @@ public class Column {
             if (this.autoincrement !=  other.autoincrement) {
                 differences.append("Esta columna es autoincrementada?: ").append(this.autoincrement)
                            .append(" vs ").append(other.autoincrement).append("\n");
+            }
+
+            if (this.isNullable !=  other.isNullable) {
+                differences.append("Esta columna puede ser null?: ").append(this.isNullable)
+                           .append(" vs ").append(other.isNullable).append("\n");
             }
 
             if (this.primaryKey !=  other.primaryKey) {
@@ -55,7 +55,6 @@ public class Column {
                            .append(" vs ").append(other.unique).append("\n");
             }
 
-
             if(foreingKey != null &&  other.foreingKey != null) {
                 differences.append(this.foreingKey.compareTo(other.foreingKey));
             } else if(foreingKey != null && other.foreingKey == null) {
@@ -64,7 +63,7 @@ public class Column {
             } else if(foreingKey == null && other.foreingKey != null) {
                 differences.append("En columna: " + name + " Tiene clave foranea: " + other.foreingKey.toString());
             }
-        }
+
         differences.append("\n\n");
         return differences.toString();
     }

@@ -70,7 +70,7 @@ public class Table {
                 String diffColumns = column.compareTo(columnOther);
 
                 if (!diffColumns.trim().isEmpty()) {
-                    differences.append("Ambas tablas tienen la columna: ")
+                    differences.append("Ambas tablas (" + tableName + ") tienen la columna: ")
                             .append("(").append(strColumn).append(") ")
                             .append("Diferencias:\n")
                             .append(diffColumns);
@@ -78,7 +78,7 @@ public class Table {
             } else {
                 differences.append("La columna ")
                         .append("(").append(strColumn).append(") ")
-                        .append("solo existe en la tabla del primer esquema, no existe en la otra tabla.\n");
+                        .append("solo existe en la tabla (" + tableName + ") del primer esquema, no existe en la otra tabla.\n");
             }
         }
     }
@@ -92,12 +92,12 @@ public class Table {
             if (!columns.containsKey(strColumn)) {
                 missingColumns.append("La columna ")
                             .append(strColumn)
-                            .append(" no existe en la otra tabla.\n");
+                            .append(" no existe en la tabla (" + tableName + ") del segundo esquema.\n");
             }
         }
 
         if (missingColumns.length() > 0) {
-            differences.append("Las columnas diferentes de la tabla del segundo esquema son:\n")
+            differences.append("Las columnas diferentes de la tabla (" + tableName + ") del segundo esquema son:\n")
                     .append(missingColumns);
         }
     }
