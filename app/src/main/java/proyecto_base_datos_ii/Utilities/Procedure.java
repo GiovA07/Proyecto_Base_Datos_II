@@ -20,7 +20,7 @@ public class Procedure {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof Function)) return false;
+        if (!(obj instanceof Procedure)) return false;
         Procedure other = (Procedure) obj;
         
         if (!this.name.equals(other.name)) return false;
