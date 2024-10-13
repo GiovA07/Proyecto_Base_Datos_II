@@ -29,7 +29,7 @@ Ambos esquemas tienen la misma tabla (departamento)
  - El número de columnas es diferente: 4 vs 3
  - Ambas tablas tienen la misma columna (presupuesto).
  - Ambas tablas tienen la misma columna (id_departamento).
-  * La columna (nro_dir) solo existe en la tabla del primer esquema, no existe en la otra tabla.
+  * La columna (nro_dir) solo existe en la tabla del segundo esquema, no existe en la otra tabla.
  - Ambas tablas tienen la misma columna (nombre_departamento).
 
 

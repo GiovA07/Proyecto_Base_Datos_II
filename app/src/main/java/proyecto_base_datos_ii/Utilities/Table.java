@@ -75,7 +75,7 @@ public class Table {
             } else {
                 differences.append("  * La columna ")
                         .append("(").append(strColumn).append(") ")
-                        .append("solo existe en la tabla del primer esquema, no existe en la otra tabla.\n");
+                        .append("solo existe en la tabla del segundo esquema, no existe en la otra tabla.\n");
             }
         }
     }
@@ -89,12 +89,12 @@ public class Table {
             if (!columns.containsKey(strColumn)) {
                 missingColumns.append("  * La columna ")
                             .append(strColumn)
-                            .append(" no existe en la tabla (" + tableName + ") del segundo esquema.\n");
+                            .append(" no existe en la tabla (" + tableName + ") del primer esquema.\n");
             }
         }
 
         if (missingColumns.length() > 0) {
-            differences.append("  * Las columnas diferentes de la tabla (" + tableName + ") del segundo esquema son:\n")
+            differences.append("  * Las columnas diferentes de la tabla (" + tableName + ") del primer esquema son:\n")
                     .append(missingColumns);
         }
     }
