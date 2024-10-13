@@ -19,8 +19,8 @@ public class Column {
 
     @Override
     public String toString() {
-        return "Column: " + name + " " + type + (autoincrement?"autoincrement ":"") +
-         (primaryKey?"primary key ":"") + (unique?"unique ":"") + " foreign key = " + foreingKey + '\n';
+        return "Column: " + name + " " + type + " " + (autoincrement?"autoincrement ":"") +
+         (primaryKey?"primary key ":"") + (unique?"unique ":"")  + (foreingKey!=null?"foreign key: "+foreingKey:"")+ '\n';
     }
 
 

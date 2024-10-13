@@ -3,12 +3,14 @@ package proyecto_base_datos_ii.Utilities;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Proc_manager {
 
     private SqlTypeMap valDataTypes;
     private DatabaseMetaData metaData;
-    private String[] ioDataType = {"NO C","IN","INOUT","OUT","RETORNO","RESULSET"};
+    private String[] ioDataType = {"UNKNOW","IN","INOUT","OUT","RETORNO","RESULSET"};
 
 
     public Proc_manager(Connection connection) throws SQLException {
@@ -21,7 +23,7 @@ public class Proc_manager {
         List<Function> fList = new ArrayList<>();
         
         while (funcs.next()) {
-            List<Param> fparams = new ArrayList<>();
+            Set<Param> fparams = new HashSet<>();
             String currFunc = funcs.getString("FUNCTION_NAME");
             String retType = valDataTypes.getType(funcs.getInt("FUNCTION_TYPE"));
 

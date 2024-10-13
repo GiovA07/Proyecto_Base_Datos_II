@@ -16,7 +16,7 @@ public class Function {
     }
 
     public String toString() {
-        return "Function: "+ name + " ret-> "+ typeReturn + params + "\n";
+        return "Function: "+ name + " ret-> "+ typeReturn + " " + params + "\n";
     }
 
     public boolean equals(Function other){
@@ -35,7 +35,7 @@ public class Function {
             differences.append("Diferencia en nombres: " + this.name + " vs " + other.name + ".");
         }
         //list common parameters
-        Set<Param> commonParams = params.retainAll(other.params);
+        // Set<Param> commonParams = params.retainAll(other.params);
 
 
         return differences.toString();

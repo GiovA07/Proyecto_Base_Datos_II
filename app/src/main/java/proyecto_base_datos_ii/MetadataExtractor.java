@@ -16,10 +16,12 @@ public class MetadataExtractor {
 
     private Connection connection;
     private static Proc_manager procMan;
+    private SqlTypeMap sqlTypeMap;
 
     public MetadataExtractor(Connection con) throws SQLException {
         connection = con;
         procMan = new Proc_manager(con);
+        sqlTypeMap = new SqlTypeMap();
     }
 
     public void captureMethodsInfo(Schema shcema) throws SQLException {
@@ -54,7 +56,7 @@ public class MetadataExtractor {
                 String columnName = columns.getString("COLUMN_NAME");
 
                 column.setName(columnName);
-                column.setType(columns.getString("TYPE_NAME"));
+                column.setType(sqlTypeMap.getType(columns.getInt("DATA_TYPE")));
 
                 String isAutoincrement = columns.getString("IS_AUTOINCREMENT");
                 column.setAutoincrement("YES".equalsIgnoreCase(isAutoincrement));
