@@ -14,6 +14,6 @@ public class Procedure {
     }
 
     public String toString() {
-        return "Procedure: "+ name + " ret-> "+ typeReturn + params + "\n";
+        return "Procedure: "+ name + " ret-> "+ typeReturn + " " + params + "\n";
     }
 }

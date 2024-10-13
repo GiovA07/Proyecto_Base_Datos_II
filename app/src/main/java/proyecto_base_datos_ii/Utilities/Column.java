@@ -19,8 +19,8 @@ public class Column {
 
     @Override
     public String toString() {
-        return "Column: " + name + " type = " + type + " autoincrement = " + autoincrement +
-        " primary key = " + primaryKey + " unique = " + unique + " foreign key = " + foreingKey + '\n';
+        return "Column: " + name + " " + type + " " + (autoincrement?"autoincrement ":"") +
+         (primaryKey?"primary key ":"") + (unique?"unique ":"")  + (foreingKey!=null?"foreign key: "+foreingKey:"")+ '\n';
     }
 
 
@@ -56,13 +56,12 @@ public class Column {
             }
 
 
-            differences.append("Veamos si hay diferencia entre las claves foraneas de la tabla: \n");
             if(foreingKey != null &&  other.foreingKey != null) {
                 differences.append(this.foreingKey.compareTo(other.foreingKey));
             } else if(foreingKey != null && other.foreingKey == null) {
                 differences.append("En columna: " + name + " Tiene clave foranea: " + foreingKey.toString());
                 //aca ver si le ponemos que la otra columna  no tiene clave foranea
-            } else {
+            } else if(foreingKey == null && other.foreingKey != null) {
                 differences.append("En columna: " + name + " Tiene clave foranea: " + other.foreingKey.toString());
             }
         }

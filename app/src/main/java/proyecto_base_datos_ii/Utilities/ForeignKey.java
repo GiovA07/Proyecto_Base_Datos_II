@@ -20,11 +20,7 @@ public class ForeignKey {
 
     @Override
     public String toString() {
-        return "ForeingKey {" +
-            "name='" + name + '\'' +
-            ", tableReference='" + tableReference + '\'' +
-            ", columnReference='" + columnReference + '\'' +
-            '}';
+        return name + " reference to (" + columnReference + ") in " + tableReference;
     }
 
 

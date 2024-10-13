@@ -43,6 +43,35 @@ public class Schema {
         tablesCompare(tables, othTables, this.name);
         tablesCompare(othTables, tables, other.getName());
 
+        //ver si este cambio lo dejamos o no.
+        StringBuilder tempDifferences = new StringBuilder();
+
+        for (Table otb : othTables) {
+            for (Table tb : tables) {
+                if (otb.getName().equals(tb.getName())) {
+                    String tableDifferences = otb.compareTo(tb);
+                    if (!tableDifferences.trim().isEmpty())
+                        tempDifferences.append(tableDifferences);
+                }
+            }
+        }
+
+        if (tempDifferences.length() > 0)
+            diferences.append("Diferencias entre las tablas iguales de ")
+                       .append(this.getName())
+                       .append(" vs ")
+                       .append(other.getName())
+                       .append(":\n")
+                       .append(tempDifferences);
+        else
+            diferences.append("En las tablas que tienen en comun no existen diferencias.\n");
+
+        funcCompare(functions, othFunctions, this.name);
+        funcCompare(othFunctions, othFunctions, other.name);
+
+        procCompare(procedures, othProcedures, this.name);
+        procCompare(othProcedures, procedures, other.name);
+
         return diferences.toString();
     }
 
@@ -54,10 +83,39 @@ public class Schema {
                     isEQ = true;
             }
             if (!isEQ) {
-                diferences.append("El schema: " + sch + " contine particularmente la tabla\n");
+                diferences.append("El schema " + sch + " contine particularmente la tabla\n");
                 diferences.append(tab);
             }
         }
     }
+
+    public void procCompare(List<Procedure> first, List<Procedure> second, String sch) {
+        for(Procedure pr: first) {
+            boolean isEQ = false;
+            for(Procedure pr2: second) {
+                if (pr.toString().equals(pr2.toString()))
+                    isEQ = true;
+            }
+            if (!isEQ) {
+                diferences.append("El schema " + sch + " contine particularmente el procedmiento \n");
+                diferences.append(pr);
+            }
+        }
+    }
+
+    public void funcCompare(List<Function> first, List<Function> second, String sch) {
+        for(Function fn: first) {
+            boolean isEQ = false;
+            for(Function fn2: second) {
+                if (fn.toString().equals(fn2.toString()))
+                    isEQ = true;
+            }
+            if (!isEQ) {
+                diferences.append("El schema " + sch + " contine particularmente la funcion \n");
+                diferences.append(fn);
+            }
+        }
+    }
+
 }
 

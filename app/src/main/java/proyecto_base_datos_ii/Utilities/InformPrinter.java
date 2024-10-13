@@ -13,21 +13,21 @@ public class InformPrinter {
     public void printFile() {
         try {
             FileWriter fw = new FileWriter("app/src/main/resources/Diferecnces_Inform.txt");
-            int a = tableSection.length();
-            int b = funcSection.length();
-            int c = procSection.length();
-            int d = triggerSection.length();
+            int numTabDiff = tableSection.length(),
+            numFuncDiff = funcSection.length(),
+            numProcDiff = procSection.length(),
+            numTriDiff = triggerSection.length();
 
-            if (a == 35 && b == 38 && c == 56)
+            if (numTabDiff == 35 && numFuncDiff == 38 && numProcDiff == 56)
                 init += " No se encontraron diferencias, bases de datos compatibles";
 
-            if (a > 35)
+            if (numTabDiff > 35)
                 init += tableSection;
-            if (d > 37)
+            if (numTriDiff > 37)
                 init += triggerSection;
-            if (b > 38)
+            if (numFuncDiff > 38)
                 init += funcSection;
-            if (c > 56)
+            if (numProcDiff > 56)
                 init += procSection;
 
             fw.write(init);

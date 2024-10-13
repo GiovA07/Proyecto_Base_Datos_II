@@ -21,13 +21,20 @@ public class SQLDiff {
         System.out.println("Configuracion Inicial Lista");
         connection = post.get_connection();
 
-        Schema  schema = new Schema("Esquema1");
+        Schema  schema = new Schema("esquema1");
+        Schema  schema2 = new Schema("esquema2");
 
         metadataExtractor = new MetadataExtractor(connection);
         metadataExtractor.captureInfoTables(schema);
         metadataExtractor.captureMethodsInfo(schema);
-        schema.printTables();
-        schema.printMethods();        printer.printFile();
+
+        metadataExtractor.captureInfoTables(schema2);
+        metadataExtractor.captureMethodsInfo(schema2);
+
+        System.out.println(schema.compareTo(schema2));
+
+        // schema.printTables();
+        // schema.printMethods();        printer.printFile();
 
         connection.close();
     }
