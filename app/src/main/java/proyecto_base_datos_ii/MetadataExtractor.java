@@ -61,6 +61,10 @@ public class MetadataExtractor {
                 String isAutoincrement = columns.getString("IS_AUTOINCREMENT");
                 column.setAutoincrement("YES".equalsIgnoreCase(isAutoincrement));
 
+
+                String isNullable = columns.getString("IS_NULLABLE");
+                column.setNullable("YES".equalsIgnoreCase(isNullable));
+
                 column.setPrimaryKey(primaryKeys.contains(columnName));
 
                 if (foreignKeys.containsKey(columnName)) {
