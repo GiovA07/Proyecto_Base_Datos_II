@@ -83,7 +83,8 @@ public class Schema {
                     isEQ = true;
             }
             if (!isEQ) {
-                diferences.append("El schema " + sch + " contine particularmente la tabla\n");
+                // diferences.append('\n');
+                diferences.append("\nEl schema " + sch + " contine particularmente la tabla\n");
                 diferences.append(tab);
             }
         }
@@ -94,10 +95,11 @@ public class Schema {
             boolean isEQ = false;
             for(Procedure pr2: second) {
                 if (pr.toString().equals(pr2.toString()))
-                    isEQ = true;
+                isEQ = true;
             }
             if (!isEQ) {
-                diferences.append("El schema " + sch + " contine particularmente el procedmiento \n");
+                diferences.append('\n');
+                diferences.append("\nEl schema " + sch + " contine particularmente el procedmiento \n");
                 diferences.append(pr);
             }
         }
@@ -111,7 +113,8 @@ public class Schema {
                     isEQ = true;
             }
             if (!isEQ) {
-                diferences.append("El schema " + sch + " contine particularmente la funcion \n");
+                diferences.append('\n');
+                diferences.append("\nEl schema " + sch + " contine particularmente la funcion \n");
                 diferences.append(fn);
             }
         }
