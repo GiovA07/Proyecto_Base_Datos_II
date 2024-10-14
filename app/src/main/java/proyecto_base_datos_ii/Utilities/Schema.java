@@ -50,7 +50,8 @@ public class Schema {
             for (Table tb : tables) {
                 if (otb.getName().equals(tb.getName())) {
                     String tableDifferences = otb.compareTo(tb);
-                    tempDifferences.append("Ambos esquemas tienen la misma tabla ("+ otb.getName() + ")\n");
+                    if (!otb.getName().contains("pk"))
+                        tempDifferences.append("Ambos esquemas tienen la misma tabla ("+ otb.getName() + ")\n");
                     if (!tableDifferences.trim().isEmpty())
                         tempDifferences.append(tableDifferences).append("\n\n");
                 }
@@ -83,7 +84,7 @@ public class Schema {
                 if (tab.getName().equals(tab2.getName()))
                     isEQ = true;
             }
-            if (!isEQ) {
+            if (!isEQ && !tab.getName().contains("pk")) {
                 // diferences.append('\n');
                 diferences.append("\nEl schema " + sch + " contine particularmente la tabla\n");
                 diferences.append(tab);

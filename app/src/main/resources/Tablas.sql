@@ -39,6 +39,10 @@ CREATE TABLE Producto (
     CONSTRAINT pk_produc primary key (cod_producto)
 );
 
+-- CREATE INDEX idx_produc ON Producto (cod_producto);
+CREATE INDEX idx_client ON Cliente (nro_cliente);
+
+
 -- Tabla de Departamento en Esquema1
 CREATE TABLE Departamento (
     id_departamento INT NOT NULL,

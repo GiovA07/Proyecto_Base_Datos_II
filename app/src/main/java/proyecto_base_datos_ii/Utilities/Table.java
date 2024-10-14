@@ -28,8 +28,8 @@ public class Table {
     @Override
     public String toString() {
         return "Table: " + tableName + '\n' +
-             columns +'\n' +
-             triggers +'\n';
+             (columns.isEmpty()?"":columns) +'\n' +
+             (triggers.isEmpty()?"":triggers) +'\n';
     }
 
 

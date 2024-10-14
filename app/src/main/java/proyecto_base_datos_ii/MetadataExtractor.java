@@ -33,7 +33,7 @@ public class MetadataExtractor {
 
     public void captureInfoTables(Schema schema) throws SQLException {
         String nameSchema = schema.getName();
-        String[] list = {"TABLE", "VIEW", "COLUMN", "SYSTEM TABLE", "ALIAS"};
+        String[] list = {"TABLE", "VIEW", "COLUMN", "INDEX"};
 
         DatabaseMetaData metaData = connection.getMetaData();
         ResultSet r = metaData.getTables(null, nameSchema, null, list);
