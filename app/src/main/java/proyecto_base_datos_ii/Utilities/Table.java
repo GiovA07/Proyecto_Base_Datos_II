@@ -11,7 +11,7 @@ public class Table {
     private List<Trigger> triggers;
 
 
-    public Table(){
+    public Table() {
         this.columns = new HashMap<>();
         this.triggers = new ArrayList<>();
     }
@@ -70,8 +70,8 @@ public class Table {
                 Column column = columns.get(strColumn);
                 Column columnOther = otherColumnsMap.get(strColumn);
                 String diffColumns = column.compareTo(columnOther);
-                differences.append(" - Ambas tablas tienen la misma columna (" + strColumn + ").\n");
                 if (!diffColumns.trim().isEmpty()) {
+                    differences.append(" - Ambas tablas tienen la misma columna (" + strColumn + ").\n");
                     differences.append("  -> Con las diferencias: ").append(diffColumns);
                 }
             } else {
@@ -119,85 +119,6 @@ public class Table {
             if (!triggers.contains(otherTrigger)) {
                 differences.append("  * El trigger ").append(otherTrigger.getName()).append(" no existe en la tabla del primer esquema. \n");
             }
-        }
-
-        // Comparar diferencias en triggers
-        for (Trigger trigger : triggers) {
-            for (Trigger otherTrigger : otherTriggers) {
-                if (trigger.equals(otherTrigger)) {
-                    // Si son iguales, no hacemos nada
-                } else if (trigger.getName().equals(otherTrigger.getName())) {
-                    differences.append(trigger.differencesToString(otherTrigger));
-                }
-            }
-        }
-    }
-
-    public static void main(String[] args) {
-        // Crear claves foráneas para usar en las columnas
-        ForeignKey fk1 = new ForeignKey();
-        fk1.setName("FK_Usuario_Rol");
-        fk1.setTableReference("Rol");
-        fk1.setColumnReference("id_rol");
-
-        ForeignKey fk2 = new ForeignKey();
-        fk2.setName("FK_Usuario_Tienda");
-        fk2.setTableReference("Tienda");
-        fk2.setColumnReference("id_tienda");
-
-        // Crear columnas para la primera tabla
-        Column column1_1 = new Column();
-        column1_1.setName("usuario_id");
-        column1_1.setType("INT");
-        column1_1.setAutoincrement(true);
-        column1_1.setPrimaryKey(true);
-        column1_1.setUniqe(true);
-        column1_1.setForeingKey(fk1);
-
-        Column column1_2 = new Column();
-        column1_2.setName("nombre");
-        column1_2.setType("VARCHAR(100)");
-        column1_2.setAutoincrement(false);
-        column1_2.setPrimaryKey(false);
-        column1_2.setUniqe(false);
-
-        // Crear la primera tabla
-        Table table1 = new Table();
-        table1.setName("Usuarios");
-        table1.addColumn(column1_1);
-        table1.addColumn(column1_2);
-
-        // Crear columnas para la segunda tabla
-        Column column2_1 = new Column();
-        column2_1.setName("usuario_id");
-        column2_1.setType("INT");
-        column2_1.setAutoincrement(false);
-        column2_1.setPrimaryKey(false);
-        column2_1.setUniqe(false);
-        column2_1.setForeingKey(fk2);
-
-        Column column2_2 = new Column();
-        column2_2.setName("email");
-        column2_2.setType("VARCHAR(100)");
-        column2_2.setAutoincrement(false);
-        column2_2.setPrimaryKey(false);
-        column2_2.setUniqe(true);
-
-        // Crear la segunda tabla
-        Table table2 = new Table();
-        table2.setName("Usuarios");
-        table2.addColumn(column2_1);
-        table2.addColumn(column2_2);
-
-        // Comparar las dos tablas
-        String differences = table1.compareTo(table2);
-
-        // Mostrar resultados de la comparación
-        if (differences.isEmpty()) {
-            System.out.println("No hay diferencias entre las tablas.");
-        } else {
-            System.out.println("Diferencias encontradas:");
-            System.out.println(differences);
         }
     }
 
