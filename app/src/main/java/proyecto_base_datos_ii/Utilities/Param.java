@@ -8,7 +8,7 @@ public class Param {
     public Param(String name, String typeP, String typeDP) {
         this.name = name;
         this.type_param = typeP; // IN, OUT IN-OUT
-        this.type_data = typeDP; 
+        this.type_data = typeDP;
     }
 
     /*
@@ -67,18 +67,5 @@ public class Param {
         result = 31 * result + type_param.hashCode();
         result = 31 * result + type_data.hashCode();
         return result;
-    }
-
-    public static void main(String[] args) {
-        Param param1 = new Param("a", "IN", "Integer");
-        Param param2 = new Param("b", "OUT", "String");
-        Param param4 = new Param("x", "IN", "Float");
-        Param param6 = new Param("a", "OUT", "Integer"); // Mismo nombre, tipo_param diferente
-        Param param8 = new Param("b", "IN", "String");
-        System.out.println(param1.differencesToString(param4));
-        System.out.println(param1.differencesToString(param6));
-        System.out.println(param2.differencesToString(param4));
-        System.out.println(param1.differencesToString(param1));
-
     }
 }

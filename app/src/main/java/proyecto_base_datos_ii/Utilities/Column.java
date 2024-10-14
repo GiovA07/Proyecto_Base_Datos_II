@@ -67,47 +67,5 @@ public class Column {
         return differences.toString();
     }
 
-
-    public static void main(String[] args) {
-        // Crear dos instancias de ForeignKey para usar en las columnas
-        ForeignKey fk1 = new ForeignKey();
-        fk1.setName("FK_Usuario_Rol");
-        fk1.setTableReference("Rol");
-        fk1.setColumnReference("id_rol");
-
-        ForeignKey fk2 = new ForeignKey();
-        fk2.setName("FK_Usuario_Tienda");
-        fk2.setTableReference("Tienda");
-        fk2.setColumnReference("id_tienda");
-
-        // Crear dos instancias de Column
-        Column column1 = new Column();
-        column1.setName("usuario_id");
-        column1.setType("INT");
-        column1.setAutoincrement(true);
-        column1.setPrimaryKey(true);
-        column1.setUniqe(true);
-        column1.setForeingKey(fk1);
-
-        Column column2 = new Column();
-        column2.setName("usuario_id");
-        column2.setType("VARCHAR(255)");
-        column2.setAutoincrement(false);
-        column2.setPrimaryKey(false);
-        column2.setUniqe(false);
-        column2.setForeingKey(fk2);
-
-        // Comparar las dos columnas
-        String differences = column1.compareTo(column2);
-
-        // Mostrar resultados de la comparación
-        if (differences.isEmpty()) {
-            System.out.println("No hay diferencias entre las columnas.");
-        } else {
-            System.out.println("Diferencias encontradas:");
-            System.out.println(differences);
-        }
-    }
-
 }
 

@@ -46,30 +46,4 @@ public class ForeignKey {
         return differences.toString();
     }
 
-
-
-    public static void main(String[] args) {
-        // Crear dos instancias de ForeignKey
-        ForeignKey fk1 = new ForeignKey();
-        fk1.setName("FK_Usuario_Rol");
-        fk1.setTableReference("Rol");
-        fk1.setColumnReference("id_rol");
-
-        ForeignKey fk2 = new ForeignKey();
-        fk2.setName("FK_Usuario_Rol");
-        fk2.setTableReference("UserRole");
-        fk2.setColumnReference("role_id");
-
-        // Comparar las dos claves foráneas
-        String differences = fk1.compareTo(fk2);
-
-        // Mostrar resultados de la comparación
-        if (differences.isEmpty()) {
-            System.out.println("No hay diferencias entre las claves foráneas.");
-        } else {
-            System.out.println("Diferencias encontradas:");
-            System.out.println(differences);
-        }
-    }
-
 }

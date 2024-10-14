@@ -22,7 +22,7 @@ public class Procedure {
         if (this == obj) return true;
         if (!(obj instanceof Procedure)) return false;
         Procedure other = (Procedure) obj;
-        
+
         if (!this.name.equals(other.name)) return false;
         if (!this.returnType.equals(other.returnType)) return false;
 
@@ -37,7 +37,7 @@ public class Procedure {
             differences.append(this.toString());
             return differences.toString();
         }
-    
+
         differences.append("\nLos procedimientos difieren: ");
         differences.append("\n 1: " + this);
         differences.append("\n 2: "+ other);
@@ -87,42 +87,11 @@ public class Procedure {
         }
         return differences.toString();
     }
-    
+
     public static Set<Param> commonParams(Set<Param> s1, Set<Param> s2){
         Set<Param> result = new HashSet<>(s1);
         result.retainAll(s2);
         return result;
     }
 
-    public static void main(String[] args){
-        Set<Param> params1 = new HashSet<>();
-        params1.add(new Param("a", "IN", "Integer"));
-        params1.add(new Param("b", "OUT", "String"));
-
-        Set<Param> params2 = new HashSet<>();
-        params2.add(new Param("a", "IN", "Integer")); // Common parameter
-        params2.add(new Param("c", "OUT", "Double"));
-
-        Set<Param> params3 = new HashSet<>();
-        params3.add(new Param("x", "IN", "Float"));
-        params3.add(new Param("y", "IN-OUT", "Boolean"));
-
-        Set<Param> params4 = new HashSet<>();
-        params4.add(new Param("a", "IN", "Integer")); // Common parameter
-        params4.add(new Param("b", "IN", "String")); // Similar name, same type
-
-        // Create Procedure objects
-        Procedure proc1 = new Procedure("procedureA", "NULL", params1);
-        Procedure proc2 = new Procedure("procedureB", "NULL", params2);
-        Procedure proc3 = new Procedure("procedureC", "TRIGGER", params3);
-        Procedure proc4 = new Procedure("procedureA", "NULL", params4);
-        Procedure proc5 = new Procedure("procedureA", "NULL", params1); // same as proc1 
-        
-
-        // Comparing procedures
-        System.out.println(proc1.differencesToString(proc2));
-        System.out.println(proc1.differencesToString(proc3)); 
-        System.out.println(proc1.differencesToString(proc4));
-        System.out.println(proc1.differencesToString(proc5));
-    }
 }
