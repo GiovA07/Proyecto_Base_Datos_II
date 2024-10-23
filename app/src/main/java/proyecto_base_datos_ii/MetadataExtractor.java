@@ -33,7 +33,7 @@ public class MetadataExtractor {
 
     public void captureInfoTables(Schema schema) throws SQLException {
         String nameSchema = schema.getName();
-        String[] list = {"TABLE", "VIEW", "COLUMN", "INDEX"};
+        String[] list = {"TABLE", "VIEW", "COLUMN"};
 
         DatabaseMetaData metaData = connection.getMetaData();
         ResultSet r = metaData.getTables(null, nameSchema, null, list);
@@ -86,6 +86,20 @@ public class MetadataExtractor {
                 table.addColumn(column);
                 table.setTriggers(trList);
             }
+
+            ResultSet inx = metaData.getIndexInfo(null, nameSchema, tableName, false, true);
+            
+            while (inx.next()) {
+
+                String indexName = inx.getString(6);
+                String columN = inx.getString(9);
+
+                String newIndex = "Index: " + indexName + " en " + columN + " de " + tableName;
+                // System.out.println(newIndex);
+                table.addIndex(newIndex);
+            }
+            inx.close();
+
             columns.close();
             schema.addTable(table);
         }

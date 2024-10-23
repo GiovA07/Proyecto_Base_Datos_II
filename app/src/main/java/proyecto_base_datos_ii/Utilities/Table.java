@@ -9,17 +9,22 @@ public class Table {
     private String tableName;
     private Map<String, Column> columns;
     private List<Trigger> triggers;
+    private List<String> indexs;
 
 
     public Table() {
         this.columns = new HashMap<>();
         this.triggers = new ArrayList<>();
+        this.indexs = new ArrayList<>();
     }
 
     public String getName() {return tableName;}
+    public List<String> getIndex(){return indexs;}
 
     public void setName(String name){this.tableName = name;}
     public void addColumn(Column column){columns.put(column.getName(), column);}
+
+    public void addIndex(String index) {indexs.add(index);}
 
     public void setTriggers(List<Trigger> trList) {
         this.triggers = trList;
@@ -29,13 +34,16 @@ public class Table {
     public String toString() {
         return "Table: " + tableName + '\n' +
              (columns.isEmpty()?"":columns) +'\n' +
-             (triggers.isEmpty()?"":triggers) +'\n';
+             (triggers.isEmpty()?"":triggers) +
+             (indexs.isEmpty()?"":indexs) + "\n\n";
     }
 
 
     public String compareTo(Table other) {
         StringBuilder differences = new StringBuilder();
 
+        // Compara indices de la tabla
+        compareIndex(other, differences);
         // Comparar el numero de columnas
         compareColumnCount(other, differences);
 
@@ -45,9 +53,31 @@ public class Table {
         // Comparar columnas que solo estan en la segunda tabla
         compareMissingColumns(other, differences);
 
+
         compareTriggers(other, differences);
 
         return differences.toString();
+    }
+
+
+    private void compareIndex(Table other, StringBuilder differences) {
+        // Comparar indices en ambas tablas
+        List<String> aux = new ArrayList<>();
+        List<String> indexsOther = other.getIndex();
+        
+        for (String idx : indexs) {
+            if (!indexsOther.contains(idx)) {
+                aux.add(idx + "(segundo esquema)");
+            }
+        }
+        for (String idx : indexsOther) {
+            if (!indexs.contains(idx)) {
+                aux.add(idx + "(primer esquema)");
+            }
+        }
+        if (aux.size() > 0) 
+            for (String index : aux)
+                differences.append("  * " +index +"\n");
     }
 
     // Metodo para comparar el número de columnas
@@ -91,7 +121,7 @@ public class Table {
             if (!columns.containsKey(strColumn)) {
                 missingColumns.append("  * La columna ")
                             .append(strColumn)
-                            .append(" no existe en la tabla (" + tableName + ") del primer esquema.\n");
+                            .append(" no existe en la tabla (" + tableName + ") del segundo esquema.\n");
             }
         }
 
@@ -110,7 +140,7 @@ public class Table {
             if (otherTriggers.contains(trigger)) {
                 differences.append(" - El trigger ").append(trigger.getName()).append(" existe en ambas tablas.\n");
             } else {
-                differences.append("  * El trigger ").append(trigger.getName()).append(" solo existe en la tabla del segundo esquema.\n");
+                differences.append("  * El trigger ").append(trigger.getName()).append(" solo existe en la tabla del primer esquema.\n");
             }
         }
 
