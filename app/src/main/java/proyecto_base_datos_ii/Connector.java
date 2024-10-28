@@ -18,6 +18,12 @@ public class Connector {
 
     }
 
+    public User get_user() {
+        if (user == null)
+            throw new IllegalAccessError();
+        return user;
+    }
+
 
     public void configInit(String pathProp) {
         Properties properties = new Properties();
@@ -28,6 +34,8 @@ public class Connector {
             String username = (String) properties.get("USUARIO");
             String password = (String) properties.get("CLAVE");
             user = new User(driver, url, username, password);
+            String schema = (String) properties.get("SCHEMA");
+            user.set_schema(schema);
             Class.forName(driver);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

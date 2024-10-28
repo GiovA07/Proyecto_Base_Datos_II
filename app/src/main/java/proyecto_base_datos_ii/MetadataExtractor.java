@@ -24,11 +24,11 @@ public class MetadataExtractor {
         sqlTypeMap = new SqlTypeMap();
     }
 
-    public void captureMethodsInfo(Schema shcema) throws SQLException {
-        String sName = shcema.getName();
+    public void captureMethodsInfo(Schema schema) throws SQLException {
+        String sName = schema.getName();
 
-        shcema.setFunctions(procMan.captureFuncData(sName));
-        shcema.setProcedures(procMan.captureProcData(sName));
+        schema.setFunctions(procMan.captureFuncData(sName));
+        schema.setProcedures(procMan.captureProcData(sName));
     }
 
     public void captureInfoTables(Schema schema) throws SQLException {
@@ -88,7 +88,7 @@ public class MetadataExtractor {
             }
 
             ResultSet inx = metaData.getIndexInfo(null, nameSchema, tableName, false, true);
-            
+
             while (inx.next()) {
 
                 String indexName = inx.getString(6);

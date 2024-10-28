@@ -58,7 +58,13 @@ CREATE TABLE Factura (
     monto_total DECIMAL(12,2) NOT NULL,
     estado VARCHAR(20) NOT NULL,
     CONSTRAINT pk_factura PRIMARY KEY (nro_factura),
-    CONSTRAINT fk_cliente_factura FOREIGN KEY (nro_cliente) REFERENCES Cliente(nro_cliente)
+);
+
+CREATE TABLE Negocio (
+    nro_negocio INT NOT NULL,
+    nro_factura INT NOT NULL,
+    CONSTRAINT pk_negocio PRIMARY KEY (nro_negocio),
+    CONSTRAINT fk_nro_factura FOREIGN KEY (nro_factura) REFERENCES Factura(nro_factura)
 );
 
 -- Índice en la tabla Cliente
@@ -157,6 +163,16 @@ CREATE TABLE Factura (
     CONSTRAINT pk_factura PRIMARY KEY (nro_factura),
     CONSTRAINT fk_cliente_factura FOREIGN KEY (nro_cliente) REFERENCES Cliente(nro_cliente)
 );
+
+
+CREATE TABLE Negocio (
+    nro_negocio INT NOT NULL,
+    nro_cliente INT NOT NULL,
+    CONSTRAINT pk_negocio PRIMARY KEY (nro_negocio),
+    CONSTRAINT fk_cliente_negocio FOREIGN KEY (nro_cliente) REFERENCES Cliente(nro_cliente)
+);
+
+
 
 -- Índice en la tabla Producto
 CREATE INDEX idx_producto_descripcion ON Producto (descripcion);

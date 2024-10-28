@@ -58,10 +58,10 @@ public class Column {
             if(foreingKey != null &&  other.foreingKey != null) {
                 differences.append(this.foreingKey.compareTo(other.foreingKey));
             } else if(foreingKey != null && other.foreingKey == null) {
-                differences.append("En columna: " + name + " Tiene clave foranea: " + foreingKey.toString());
+                differences.append("\n  - El segundo esquema comparado tiene clave foranea: " + foreingKey.toString() + '\n');
                 //aca ver si le ponemos que la otra columna  no tiene clave foranea
             } else if(foreingKey == null && other.foreingKey != null) {
-                differences.append("En columna: " + name + " Tiene clave foranea: " + other.foreingKey.toString());
+                differences.append("\n  - El primer esquema tiene clave foranea: " + other.foreingKey.toString() + '\n');
             }
 
         return differences.toString();

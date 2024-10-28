@@ -20,7 +20,7 @@ public class ForeignKey {
 
     @Override
     public String toString() {
-        return name + " reference to (" + columnReference + ") in " + tableReference;
+        return name + " Columna que hace referencia: (" + columnReference + ") en " + tableReference;
     }
 
 
@@ -29,17 +29,17 @@ public class ForeignKey {
         StringBuilder differences = new StringBuilder();
 
         if (!this.name.equals(other.name)) {
-            differences.append("Diferencia de Nombres: ").append(this.name)
+            differences.append("\n   * Diferencia de Nombres: ").append(this.name)
                        .append(" vs ").append(other.name).append("\n");
 
         } else if (!this.tableReference.equals(other.tableReference)) {
-            differences.append("Nombre de la Clave Foranea: ").append(this.name).append("\n");
-            differences.append("Diferencia de Referencia a tabla: ").append(this.tableReference)
+            differences.append("   * Nombre de la Clave Foranea: ").append(this.name).append("\n");
+            differences.append("   * Diferencia de Referencia a tabla: ").append(this.tableReference)
                        .append(" vs ").append(other.tableReference).append("\n");
         }
 
         if (!this.columnReference.equals(other.columnReference)) {
-            differences.append("Diferencia  de Referencia a columna: ").append(this.columnReference)
+            differences.append("   * Diferencia  de Referencia a columna: ").append(this.columnReference)
                        .append(" vs ").append(other.columnReference).append("\n");
         }
 
