@@ -67,14 +67,13 @@ public class Procedure {
                 differences.append("\n- Parámetros: ");
                 differences.append("Parametros del procedimiento perteneciente al Segundo Esquema vs Primer Esquema \n");
                 differences.append(strCompare);
-                strCompare = "";
-                strCompare += paramsDeMas(params, other.params.size());
-                if(!strCompare.isEmpty()) {
-                    differences.append("Los parametros de mas que tiene el primer esquema son:");
-                    differences.append(strCompare);
-                }
             }
-
+            strCompare = "";
+            strCompare += paramsDeMas(params, other.params.size());
+            if(!strCompare.isEmpty()) {
+                differences.append("Los parametros de mas que tiene el primer esquema son:");
+                differences.append(strCompare);
+            }
         }
         return differences.toString();
     }
