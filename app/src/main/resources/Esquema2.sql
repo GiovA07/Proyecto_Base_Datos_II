@@ -108,8 +108,25 @@ EXECUTE FUNCTION trg_uppercase_factura();
 CREATE OR REPLACE PROCEDURE actualizar_cliente(
     INT,
     VARCHAR,
-    VARCHAR
+    VARCHAR,
+	VARCHAR
 ) AS $$
+BEGIN
+    UPDATE Cliente
+    SET apellido = $2,
+        nombre = $3
+    WHERE nro_cliente = $1;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE OR REPLACE FUNCTION func_actualizar_cliente(
+    INT,
+    VARCHAR,
+    VARCHAR
+) RETURNS VOID AS $$
 BEGIN
     UPDATE Cliente
     SET apellido = $2,

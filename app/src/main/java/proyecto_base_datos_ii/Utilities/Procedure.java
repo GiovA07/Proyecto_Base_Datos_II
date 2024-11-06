@@ -1,9 +1,5 @@
 package proyecto_base_datos_ii.Utilities;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import org.checkerframework.checker.units.qual.s;
 
 public class Procedure {
     private String name;
@@ -51,13 +47,16 @@ public class Procedure {
             strCompare += compareParams(params, other.params);
             if(!strCompare.isEmpty()) {
                 differences.append("\n- Parámetros: ");
-                differences.append("Parametros del procedimiento perteneciente al Primer Esquema vs Segundo Esquema \n");
+                differences.append("Diferencias en el procedimiento perteneciente al Primer Esquema vs Segundo Esquema \n");
                 differences.append(strCompare);
-                if (!(params.size() == other.params.size())) {
-                    strCompare = "";
-                    strCompare += paramsDeMas(other.params, params.size());
-                differences.append("\n Los parametros de mas que tiene el segundo esquema son: \n");
-                    differences.append(strCompare);
+            }
+
+            if (!(params.size() == other.params.size())) {
+                strCompare = "";
+                strCompare += paramsDeMas(other.params, params.size());
+                if (!strCompare.isEmpty()) {
+                    differences.append("\n Los parametros de mas que tiene el segundo esquema son: \n");
+                    differences.append(" ->" + strCompare);
                 }
             }
 
