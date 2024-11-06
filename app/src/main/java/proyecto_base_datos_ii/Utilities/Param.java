@@ -31,7 +31,6 @@ public class Param {
 
         Param other = (Param) obj;
 
-        if (!this.name.equals(other.name)) return false;
         if (!this.type_param.equals(other.type_param)) return false;
         if (!this.type_data.equals(other.type_data)) return false;
 
@@ -39,23 +38,21 @@ public class Param {
     }
 
     public String differencesToString(Param other) {
-        if (this.equals(other)){
-            return "Son el mismo parámetro: " + this;
-        }
         StringBuilder differences = new StringBuilder();
-        differences.append("\nLos parámetros difieren: ");
-        differences.append("\n 1: " + this);
-        differences.append("\n 2: "+ other);
+        String dif = "";
 
-        if(!this.name.equals(other.name)){
-            differences.append("\n- En nombre: " + this.name + " vs. " + other.name);
-        }
         if(!this.type_param.equals(other.type_param)){
-            differences.append("\n- En tipo de parámetro: " + this.type_param + " vs. " + other.type_param);
+            dif += "\n- En tipo de parámetro: " + this.type_param + " vs. " + other.type_param;
         }
         if(!this.type_data.equals(other.type_data)){
-            differences.append("\n- En tipo de dato: " + this.type_data + " vs. " + other.type_data);
+            dif += "\n- En tipo de dato: " + this.type_data + " vs. " + other.type_data;
         }
+
+        if (!dif.isEmpty()) {
+            differences.append("\nLos parámetros difieren: ");
+            differences.append(dif);
+        }
+
         return differences.toString();
     }
 

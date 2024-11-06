@@ -64,7 +64,7 @@ public class Table {
         // Comparar indices en ambas tablas
         List<String> aux = new ArrayList<>();
         List<String> indexsOther = other.getIndex();
-        
+
         for (String idx : indexs) {
             if (!indexsOther.contains(idx)) {
                 aux.add(idx + "(segundo esquema)");
@@ -75,7 +75,7 @@ public class Table {
                 aux.add(idx + "(primer esquema)");
             }
         }
-        if (aux.size() > 0) 
+        if (aux.size() > 0)
             for (String index : aux)
                 differences.append("  * " +index +"\n");
     }
@@ -147,7 +147,7 @@ public class Table {
         // Comparar triggers que estan en la segunda tabla pero no en la primera
         for (Trigger otherTrigger : otherTriggers) {
             if (!triggers.contains(otherTrigger)) {
-                differences.append("  * El trigger ").append(otherTrigger.getName()).append(" no existe en la tabla del primer esquema. \n");
+                differences.append("  * El trigger ").append(otherTrigger.getName()).append(" no existe en la tabla del segundo esquema. \n");
             }
         }
     }

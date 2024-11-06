@@ -21,7 +21,7 @@ public class Proc_manager {
     public List<Function> captureFuncData(String schema) throws SQLException  {
         ResultSet funcs = metaData.getFunctions(null, schema, "%");
         List<Function> fList = new ArrayList<>();
-        
+
         while (funcs.next()) {
             Set<Param> fparams = new HashSet<>();
             String currFunc = funcs.getString("FUNCTION_NAME");
@@ -46,7 +46,7 @@ public class Proc_manager {
         List<Procedure> pList = new ArrayList<>();
 
         while (procs.next()) {
-            Set<Param> pParams = new HashSet<>();
+            List<Param> pParams = new ArrayList<>();
             String currProc = procs.getString("PROCEDURE_NAME");
             String retType = valDataTypes.getType(procs.getInt("PROCEDURE_TYPE"));
 

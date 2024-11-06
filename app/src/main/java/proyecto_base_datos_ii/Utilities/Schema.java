@@ -50,7 +50,7 @@ public class Schema {
             for (Table tb : tables) {
                 if (otb.getName().equals(tb.getName())) {
                     String tableDifferences = otb.compareTo(tb);
-                    
+
                     if (!tableDifferences.trim().isEmpty()) {
                         tempDifferences.append("Ambos esquemas tienen la misma tabla ("+ otb.getName() + ")\n");
                         tempDifferences.append(tableDifferences).append("\n\n");
@@ -73,7 +73,6 @@ public class Schema {
         funcCompare(othFunctions, othFunctions, other.name);
 
         procCompare(procedures, othProcedures, this.name);
-        procCompare(othProcedures, procedures, other.name);
 
         return diferences.toString();
     }
@@ -96,13 +95,34 @@ public class Schema {
         for(Procedure pr: first) {
             boolean isEQ = false;
             for(Procedure pr2: second) {
-                if (pr.toString().equals(pr2.toString()))
-                isEQ = true;
+                if (pr.getName().equals(pr2.getName())) {
+                    String dif = pr.differencesToString(pr2);
+                    if (!dif.isEmpty()) {
+                        diferences.append("\nLas diferencias del procedimiento " + pr.getName() + " son: \n");
+                        diferences.append(dif);
+                    }
+                    isEQ =  true;
+                    break;
+                }
             }
             if (!isEQ) {
-                diferences.append('\n');
-                diferences.append("\nEl schema " + sch + " contine particularmente el procedmiento \n");
-                diferences.append(pr);
+                diferences.append(" \n El segundo esquema tiene el procedimiento: \n");
+                diferences.append(pr.toString()+ "\n");
+            }
+        }
+
+
+        for(Procedure pr: second) {
+            boolean isEQ = false;
+            for(Procedure pr2: first) {
+                if (pr.getName().equals(pr2.getName())) {
+                    isEQ =  true;
+                    break;
+                }
+            }
+            if (!isEQ) {
+                diferences.append("\nEl segundo esquema tiene el procedimiento: \n");
+                diferences.append(pr.toString() + "\n");
             }
         }
     }

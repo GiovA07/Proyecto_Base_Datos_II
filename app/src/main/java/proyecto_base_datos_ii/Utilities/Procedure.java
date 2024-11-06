@@ -1,13 +1,16 @@
 package proyecto_base_datos_ii.Utilities;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import org.checkerframework.checker.units.qual.s;
 
 public class Procedure {
     private String name;
-    private Set<Param> params;
+    private List<Param> params;
     String returnType;
 
-    public Procedure(String name, String returnType, Set<Param> params) {
+    public Procedure(String name, String returnType, List<Param> params) {
         this.name = name;
         this.params = params;
         this.returnType = returnType;
@@ -15,6 +18,10 @@ public class Procedure {
 
     public String toString() {
         return name + params + " -> " + returnType;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -32,23 +39,6 @@ public class Procedure {
 
     public String differencesToString(Procedure other) {
         StringBuilder differences = new StringBuilder();
-        if(this.equals(other)){
-            differences.append("\nLos procedimientos son iguales: ");
-            differences.append(this.toString());
-            return differences.toString();
-        }
-
-        differences.append("\nLos procedimientos difieren: ");
-        differences.append("\n 1: " + this);
-        differences.append("\n 2: "+ other);
-
-        if (!this.name.equals(other.name)){
-            differences.append("\n- Nombre: ");
-            differences.append(this.name);
-            differences.append(" vs. ");
-            differences.append(other.name);
-        }
-
         if (!this.returnType.equals(other.returnType)){
             differences.append("\n- Retorno: ");
             differences.append(this.returnType);
@@ -56,42 +46,57 @@ public class Procedure {
             differences.append(other.returnType);
         }
 
-        if (!this.params.equals(other.params)){
-            differences.append("\n- Parámetros: ");
-            Set<Param> commonParams = commonParams(this.params, other.params);
-            if(!commonParams.isEmpty()){
-                differences.append("\n-- Comunes: ");
-                for(Param param: commonParams){
-                    differences.append("\n--- ");
-                    differences.append(param);
+        String strCompare = "";
+        if (params.size() <= other.params.size()) {
+            strCompare += compareParams(params, other.params);
+            if(!strCompare.isEmpty()) {
+                differences.append("\n- Parámetros: ");
+                differences.append("Parametros del procedimiento perteneciente al Primer Esquema vs Segundo Esquema \n");
+                differences.append(strCompare);
+                if (!(params.size() == other.params.size())) {
+                    strCompare = "";
+                    strCompare += paramsDeMas(other.params, params.size());
+                differences.append("\n Los parametros de mas que tiene el segundo esquema son: \n");
+                    differences.append(strCompare);
                 }
             }
-            Set<Param> exclusiveParamsThisFunc = new HashSet<>(this.params);
-            exclusiveParamsThisFunc.removeAll(commonParams);
-            if(!exclusiveParamsThisFunc.isEmpty()){
-                differences.append("\n-- Exclusivos del primero: ");
-                for(Param param: exclusiveParamsThisFunc){
-                    differences.append("\n--- ");
-                    differences.append(param);
+
+
+        } else {
+            strCompare += compareParams(other.params, params);
+            if(!strCompare.isEmpty()) {
+                differences.append("\n- Parámetros: ");
+                differences.append("Parametros del procedimiento perteneciente al Segundo Esquema vs Primer Esquema \n");
+                differences.append(strCompare);
+                strCompare = "";
+                strCompare += paramsDeMas(params, other.params.size());
+                if(!strCompare.isEmpty()) {
+                    differences.append("Los parametros de mas que tiene el primer esquema son:");
+                    differences.append(strCompare);
                 }
             }
-            Set<Param> exclusiveParamsOtherFunc = new HashSet<>(other.params);
-            exclusiveParamsOtherFunc.removeAll(commonParams);
-            if(!exclusiveParamsOtherFunc.isEmpty()){
-                differences.append("\n-- Exclusivos del segundo: ");
-                for(Param param: exclusiveParamsOtherFunc){
-                    differences.append("\n--- ");
-                    differences.append(param);
-                }
-            }
+
         }
         return differences.toString();
     }
 
-    public static Set<Param> commonParams(Set<Param> s1, Set<Param> s2){
-        Set<Param> result = new HashSet<>(s1);
-        result.retainAll(s2);
-        return result;
+    private String compareParams(List<Param>  params, List<Param> otherParams) {
+        StringBuilder differences = new StringBuilder();
+        for (int i = 0; i <  params.size(); i++) {
+            differences.append(params.get(i).differencesToString(otherParams.get(i)));
+        }
+        return differences.toString();
+
+    }
+
+    private String paramsDeMas(List<Param> params, int index) {
+        StringBuilder differences = new StringBuilder();
+        for (int i = index; i <  params.size(); i++) {
+            Param param = params.get(i);
+            differences.append(param.toString() + "\n");
+        }
+        return differences.toString();
+
     }
 
 }
