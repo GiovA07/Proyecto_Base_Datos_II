@@ -1,16 +1,21 @@
 package proyecto_base_datos_ii.Utilities;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Function {
     private String name;
     private String typeReturn;
-    private Set<Param> params;
+    private List<Param> params;
 
-    public Function(String name, String ret, Set<Param> params) {
+    public Function(String name, String ret, List<Param> params) {
         this.name = name;
         this.typeReturn = ret;
         this.params = params;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String toString() {
@@ -31,65 +36,64 @@ public class Function {
 
     public String differencesToString(Function other) {
         StringBuilder differences = new StringBuilder();
-        if(this.equals(other)){
-            differences.append("\nAmbas funciones son iguales: ");
-            differences.append(this.toString());
-            return differences.toString();
+
+        compareReturnType(other, differences);
+
+        String paramDifferences = "";
+        StringBuilder strExtraParams = new StringBuilder();
+
+        boolean sameSize = this.params.size() == other.params.size();
+
+        if (!paramDifferences.isEmpty()) {
+            differences.append("\n- Parametros: Diferencias encontradas:\n")
+                       .append(paramDifferences);
         }
-
-        differences.append("\nLas funciones difieren: ");
-        differences.append("\n 1: " + this);
-        differences.append("\n 2: "+ other);
-
-        if (!this.name.equals(other.name)){
-            differences.append("\n- Nombre: ");
-            differences.append(this.name);
-            differences.append(" vs. ");
-            differences.append(other.name);
-        }
-
-        if (!this.typeReturn.equals(other.typeReturn)){
-            differences.append("\n- Tipo de Retorno : ");
-            differences.append(this.typeReturn);
-            differences.append(" vs. ");
-            differences.append(other.typeReturn);
-        }
-
-        if (!this.params.equals(other.params)){
-            differences.append("\n- Parámetros: ");
-            Set<Param> commonParams = commonParams(this, other);
-            if(!commonParams.isEmpty()){
-                differences.append("\n-- Comunes: ");
-                for(Param param: commonParams){
-                    differences.append("\n--- ");
-                    differences.append(param);
-                }
-            }
-            Set<Param> exclusiveParamsThisFunc = new HashSet<>(this.params);
-            exclusiveParamsThisFunc.removeAll(commonParams);
-            if(!exclusiveParamsThisFunc.isEmpty()){
-                differences.append("\n-- Exclusivos del primero: ");
-                for(Param param: exclusiveParamsThisFunc){
-                    differences.append("\n--- ");
-                    differences.append(param);
-                }
-            }
-            Set<Param> exclusiveParamsOtherFunc = new HashSet<>(other.params);
-            exclusiveParamsOtherFunc.removeAll(commonParams);
-            if(!exclusiveParamsOtherFunc.isEmpty()){
-                differences.append("\n-- Exclusivos del segundo: ");
-                for(Param param: exclusiveParamsOtherFunc){
-                    differences.append("\n--- ");
-                    differences.append(param);
-                }
+        //Si no tienen el mismo size, significa que alguno tiene un parametro de mas
+        if (!sameSize) {
+            if (this.params.size() < other.params.size()) {
+                paramDifferences = compareParams(this.params, other.params);
+                addExtraParams(other.params, this.params.size(), "segundo esquema", strExtraParams);
+            } else {
+                paramDifferences = compareParams(other.params, this.params);
+                addExtraParams(this.params, other.params.size(), "primer esquema", strExtraParams);
             }
         }
+        // si hay diferencias:
+        if (!paramDifferences.isEmpty()) {
+            differences.append("\n- Parametros: Diferencias encontradas:\n")
+                       .append(paramDifferences);
+        }
+        //si tiene parametros extras:
+        if (!strExtraParams.isEmpty())
+            differences.append(strExtraParams);
+
         return differences.toString();
     }
 
-    public static Set<Param> commonParams(Function function1, Function function2){
-        Set<Param> result = new HashSet<>(function1.params);
-        result.retainAll(function2.params);
-        return result;
+
+    private void addExtraParams(List<Param> params, int startIndex, String schemaName, StringBuilder differences) {
+        differences.append("\n- Parametros adicionales en el ").append(schemaName).append(":\n");
+        for (int i = startIndex; i < params.size(); i++) {
+            differences.append(" -> ").append(params.get(i).toString()).append("\n");
+        }
+    }
+
+    private String compareParams(List<Param>  params, List<Param> otherParams) {
+        StringBuilder differences = new StringBuilder();
+        for (int i = 0; i <  params.size(); i++) {
+            differences.append(params.get(i).differencesToString(otherParams.get(i)));
+        }
+        return differences.toString();
+
+    }
+
+    private void compareReturnType(Function other, StringBuilder differences) {
+        if (!this.typeReturn.equals(other.typeReturn)){
+            differences.append("\n- Retorno: ")
+            .append(this.typeReturn)
+            .append(" vs. ")
+            .append(other.typeReturn);
+        }
+
     }
 }

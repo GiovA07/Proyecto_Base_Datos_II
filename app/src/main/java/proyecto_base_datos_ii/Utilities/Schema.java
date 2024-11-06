@@ -70,7 +70,6 @@ public class Schema {
             diferences.append("En las tablas que tienen en comun no existen diferencias.\n");
 
         funcCompare(functions, othFunctions, this.name);
-        funcCompare(othFunctions, othFunctions, other.name);
 
         procCompare(procedures, othProcedures, this.name);
 
@@ -106,8 +105,8 @@ public class Schema {
                 }
             }
             if (!isEQ) {
-                diferences.append(" \n El segundo esquema tiene el procedimiento: \n");
-                diferences.append(pr.toString()+ "\n");
+                diferences.append(" \n El primer esquema tiene el procedimiento: \n");
+                diferences.append("  -> " + pr.toString()+ "\n");
             }
         }
 
@@ -122,25 +121,48 @@ public class Schema {
             }
             if (!isEQ) {
                 diferences.append("\nEl segundo esquema tiene el procedimiento: \n");
-                diferences.append(pr.toString() + "\n");
+                diferences.append("  -> " + pr.toString() + "\n");
             }
         }
     }
 
+
+    // funcCompare(functions, othFunctions, this.name);
+    // funcCompare(othFunctions, othFunctions, other.name);
     public void funcCompare(List<Function> first, List<Function> second, String sch) {
-        for(Function fn: first) {
+        for(Function pr: first) {
             boolean isEQ = false;
-            for(Function fn2: second) {
-                if (fn.toString().equals(fn2.toString()))
-                    isEQ = true;
+            for(Function pr2: second) {
+                if (pr.getName().equals(pr2.getName())) {
+                    String dif = pr.differencesToString(pr2);
+                    if (!dif.isEmpty()) {
+                        diferences.append("\nLas diferencias de la funcion " + pr.getName() + " son: \n");
+                        diferences.append(dif);
+                    }
+                    isEQ =  true;
+                    break;
+                }
             }
             if (!isEQ) {
-                diferences.append('\n');
-                diferences.append("\nEl schema " + sch + " contine particularmente la funcion \n");
-                diferences.append(fn);
+                diferences.append(" \n El Primer esquema tiene la funcion: \n");
+                diferences.append("  -> " + pr.toString()+ "\n");
+            }
+        }
+
+
+        for(Function pr: second) {
+            boolean isEQ = false;
+            for(Function pr2: first) {
+                if (pr.getName().equals(pr2.getName())) {
+                    isEQ =  true;
+                    break;
+                }
+            }
+            if (!isEQ) {
+                diferences.append("\nEl segundo esquema tiene la funcion: \n");
+                diferences.append("  -> " + pr.toString() + "\n");
             }
         }
     }
-
 }
 

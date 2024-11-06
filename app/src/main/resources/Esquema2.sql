@@ -134,3 +134,18 @@ BEGIN
     WHERE nro_cliente = $1;
 END;
 $$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION actualizar_direccion_telefono(
+    INT,
+    VARCHAR,
+    VARCHAR
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE Cliente
+    SET direccion = $2,
+        telefono = $3
+    WHERE nro_cliente = $1;
+END;
+$$ LANGUAGE plpgsql;

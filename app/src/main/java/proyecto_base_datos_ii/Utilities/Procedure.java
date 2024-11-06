@@ -35,47 +35,46 @@ public class Procedure {
 
     public String differencesToString(Procedure other) {
         StringBuilder differences = new StringBuilder();
-        if (!this.returnType.equals(other.returnType)){
-            differences.append("\n- Retorno: ");
-            differences.append(this.returnType);
-            differences.append(" vs. ");
-            differences.append(other.returnType);
+
+        compareReturnType(other, differences);
+
+        String paramDifferences = "";
+        StringBuilder strExtraParams = new StringBuilder();
+
+        boolean sameSize = this.params.size() == other.params.size();
+
+        if (!paramDifferences.isEmpty()) {
+            differences.append("\n- Parametros: Diferencias encontradas:\n")
+                       .append(paramDifferences);
         }
-
-        String strCompare = "";
-        if (params.size() <= other.params.size()) {
-            strCompare += compareParams(params, other.params);
-            if(!strCompare.isEmpty()) {
-                differences.append("\n- Parámetros: ");
-                differences.append("Diferencias en el procedimiento perteneciente al Primer Esquema vs Segundo Esquema \n");
-                differences.append(strCompare);
-            }
-
-            if (!(params.size() == other.params.size())) {
-                strCompare = "";
-                strCompare += paramsDeMas(other.params, params.size());
-                if (!strCompare.isEmpty()) {
-                    differences.append("\n Los parametros de mas que tiene el segundo esquema son: \n");
-                    differences.append(" ->" + strCompare);
-                }
-            }
-
-
-        } else {
-            strCompare += compareParams(other.params, params);
-            if(!strCompare.isEmpty()) {
-                differences.append("\n- Parámetros: ");
-                differences.append("Parametros del procedimiento perteneciente al Segundo Esquema vs Primer Esquema \n");
-                differences.append(strCompare);
-            }
-            strCompare = "";
-            strCompare += paramsDeMas(params, other.params.size());
-            if(!strCompare.isEmpty()) {
-                differences.append("Los parametros de mas que tiene el primer esquema son:");
-                differences.append(strCompare);
+        //Si no tienen el mismo size, significa que alguno tiene un parametro de mas
+        if (!sameSize) {
+            if (this.params.size() < other.params.size()) {
+                paramDifferences = compareParams(this.params, other.params);
+                addExtraParams(other.params, this.params.size(), "segundo esquema", strExtraParams);
+            } else {
+                paramDifferences = compareParams(other.params, this.params);
+                addExtraParams(this.params, other.params.size(), "primer esquema", strExtraParams);
             }
         }
+        // si hay diferencias:
+        if (!paramDifferences.isEmpty()) {
+            differences.append("\n- Parametros: Diferencias encontradas:\n")
+                       .append(paramDifferences);
+        }
+        //si tiene parametros extras:
+        if (!strExtraParams.isEmpty())
+            differences.append(strExtraParams);
+
         return differences.toString();
+    }
+
+
+    private void addExtraParams(List<Param> params, int startIndex, String schemaName, StringBuilder differences) {
+        differences.append("\n- Parametros adicionales en el ").append(schemaName).append(":\n");
+        for (int i = startIndex; i < params.size(); i++) {
+            differences.append(" -> ").append(params.get(i).toString()).append("\n");
+        }
     }
 
     private String compareParams(List<Param>  params, List<Param> otherParams) {
@@ -87,13 +86,13 @@ public class Procedure {
 
     }
 
-    private String paramsDeMas(List<Param> params, int index) {
-        StringBuilder differences = new StringBuilder();
-        for (int i = index; i <  params.size(); i++) {
-            Param param = params.get(i);
-            differences.append(param.toString() + "\n");
+    private void compareReturnType(Procedure other, StringBuilder differences) {
+        if (!this.returnType.equals(other.returnType)){
+            differences.append("\n- Retorno: ")
+            .append(this.returnType)
+            .append(" vs. ")
+            .append(other.returnType);
         }
-        return differences.toString();
 
     }
 

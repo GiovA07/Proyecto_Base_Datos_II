@@ -23,7 +23,7 @@ public class Proc_manager {
         List<Function> fList = new ArrayList<>();
 
         while (funcs.next()) {
-            Set<Param> fparams = new HashSet<>();
+            List<Param> fparams = new ArrayList<>();
             String currFunc = funcs.getString("FUNCTION_NAME");
             String retType = valDataTypes.getType(funcs.getInt("FUNCTION_TYPE"));
 
