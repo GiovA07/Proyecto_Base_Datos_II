@@ -1,7 +1,9 @@
 package proyecto_base_datos_ii.Utilities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Schema {
     private String name;
@@ -128,19 +130,55 @@ public class Schema {
     }
 
     public void funcCompare(List<Function> first, List<Function> second, String sch) {
-        for(Function fn: first) {
-            boolean isEQ = false;
-            for(Function fn2: second) {
-                if (fn.toString().equals(fn2.toString()))
-                    isEQ = true;
+        List<Function> exclusiveOfFirstSchema = new ArrayList<>(); 
+        List<Function> exclusiveOfSecondSchema = new ArrayList<>();
+        HashMap<Function, Function> differentWithSameName = new HashMap<>(); 
+        boolean inBoth;
+
+        for(Function f1: first) {
+            inBoth = false; 
+            for(Function f2: second) {
+                if (f1.getName().equals(f2.getName())){
+                    if(!f1.equals(f2)) differentWithSameName.put(f1, f2); 
+                    inBoth = true; 
+                    break;
+                }
             }
-            if (!isEQ) {
-                diferences.append('\n');
-                diferences.append("\nEl schema " + sch + " contine particularmente la funcion \n");
-                diferences.append(fn);
+            if (!inBoth) exclusiveOfFirstSchema.add(f1);
+        }
+
+        for(Function f1: second) {
+            inBoth = false; 
+            for(Function f2: first) {
+                if (f1.getName().equals(f2.getName())){
+                    if(!f1.equals(f2)) differentWithSameName.put(f2, f1); 
+                    inBoth = true; 
+                    break;
+                }
+            }
+            if (!inBoth)
+            exclusiveOfSecondSchema.add(f1);
+        }
+
+        if(!exclusiveOfFirstSchema.isEmpty()){
+            diferences.append("\nFunciones exclusivas del esquema 1:");
+            for (Function function : exclusiveOfFirstSchema) {
+                diferences.append("\n - " + function.getName());
             }
         }
-    }
+        
+        if(!exclusiveOfSecondSchema.isEmpty()){
+            diferences.append("\nFunciones exclusivas del esquema 2:");
+            for (Function function : exclusiveOfSecondSchema) {
+                diferences.append("\n - " + function.getName());
+            }
+        }
 
+        for (Map.Entry<Function, Function> entry : differentWithSameName.entrySet()) {
+            String dif = entry.getKey().differencesToString(entry.getValue());
+            diferences.append("\n\nDiferencias en la función " + entry.getKey().getName() + ":");
+            diferences.append(dif);
+        }
+    }
 }
 

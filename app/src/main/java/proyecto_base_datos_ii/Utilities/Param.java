@@ -49,7 +49,7 @@ public class Param {
         }
 
         if (!dif.isEmpty()) {
-            differences.append("\nLos parámetros difieren: ");
+            differences.append("\n" + this.name + " y " + other.name + " difieren: ");
             differences.append(dif);
         }
 
