@@ -134,3 +134,5 @@ BEGIN
     WHERE nro_cliente = $1;
 END;
 $$ LANGUAGE plpgsql;
+
+

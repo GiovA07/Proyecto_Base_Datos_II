@@ -49,7 +49,7 @@ public class Function {
                 strCompare = "";
                 strCompare += paramsDeMas(other.params, params.size());
                 if (!strCompare.isEmpty()) {
-                    differences.append("\n Los parametros de mas que tiene la 2da función son: \n");
+                    differences.append("\n Los parametros de mas que tiene la funcion en el Segundo Esquema: \n");
                     differences.append(" ->" + strCompare);
                 }
             }
@@ -64,7 +64,7 @@ public class Function {
             strCompare = "";
             strCompare += paramsDeMas(params, other.params.size());
             if(!strCompare.isEmpty()) {
-                differences.append("\nLos parametros de mas que tiene la 1ra funcion son: \n");
+                differences.append("\nLos parametros de mas que tiene el primer esquema: \n");
                 differences.append(strCompare);
             }
         }

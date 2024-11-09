@@ -128,3 +128,20 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION func_actualizar_cliente(
+    p_nro_cliente INT,
+    p_apellido VARCHAR,
+    p_nombre VARCHAR,
+    p_nuevoparametro INT
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE Cliente
+    SET apellido = p_apellido,
+        nombre = p_nombre
+    WHERE nro_cliente = p_nro_cliente;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
