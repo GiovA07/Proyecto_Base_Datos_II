@@ -3,9 +3,6 @@ package proyecto_base_datos_ii.Utilities;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
 public class Proc_manager {
 
     private SqlTypeMap valDataTypes;

@@ -12,6 +12,7 @@ public class InformPrinter {
             fw.close();
         } catch (IOException e) {
             System.out.println("Lectura del archivo fallida");
+            System.exit(1);
         }
 
     }

@@ -1,8 +1,8 @@
 package proyecto_base_datos_ii;
 
-import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import proyecto_base_datos_ii.Utilities.*;
@@ -32,6 +32,25 @@ public class SQLDiff {
         return meta;
     }
 
+    private static void schemaExist(Connection connection, String nameSchema) throws SQLException {
+        DatabaseMetaData metaData = connection.getMetaData();
+        ResultSet schemas = metaData.getSchemas();
+        boolean schemaExists = false;
+        while (schemas.next()) {
+            String schema = schemas.getString("TABLE_SCHEM");
+            if (schema.equalsIgnoreCase(nameSchema)) {
+                schemaExists = true;
+                break;
+            }
+
+        }
+
+        if (schemaExists) {
+            System.out.println("El esquema " + nameSchema + " existe en la base de datos. Seguiremos con el proceso: \n");
+        } else {
+            throw new IllegalArgumentException("El schema: " + nameSchema + " no existe en la base de datos.");
+        }
+    }
     public static void main(String[] args) throws SQLException {
         conectorUser1.configInit("app/src/main/resources/user1.properties");
         conectorUser2.configInit("app/src/main/resources/user2.properties");
@@ -48,6 +67,9 @@ public class SQLDiff {
 
         Schema  schema = new Schema(user.get_schema());
         Schema  schema2 = new Schema(user2.get_schema());
+
+        schemaExist(connectionUser1, user.get_schema());
+        schemaExist(connectionUser2, user2.get_schema());
 
         metadataExtractorUser1 = extractMetadata(schema, connectionUser1);
 

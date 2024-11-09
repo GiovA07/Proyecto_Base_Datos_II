@@ -35,14 +35,19 @@ public class Connector {
             String password = (String) properties.get("CLAVE");
             user = new User(driver, url, username, password);
             String schema = (String) properties.get("SCHEMA");
+            if (schema == null || schema.isEmpty())
+                throw new IllegalArgumentException("Schema is null or empty. Please provide a valid schema.");
             user.set_schema(schema);
             Class.forName(driver);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            System.exit(1);
         } catch (IOException e) {
             e.printStackTrace();
+            System.exit(1);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+            System.exit(1);
         }
     }
 
@@ -54,6 +59,8 @@ public class Connector {
             connection = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
             e.printStackTrace();
+            System.exit(1);
+
         }
     }
 
@@ -62,6 +69,8 @@ public class Connector {
             connection.setAutoCommit(commit);
         } catch (SQLException e) {
             e.printStackTrace();
+            System.exit(1);
+
         }
     }
 }

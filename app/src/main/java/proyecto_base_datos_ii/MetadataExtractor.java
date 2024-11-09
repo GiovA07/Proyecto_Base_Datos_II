@@ -38,6 +38,9 @@ public class MetadataExtractor {
         DatabaseMetaData metaData = connection.getMetaData();
         ResultSet r = metaData.getTables(null, nameSchema, null, list);
 
+        if (!r.isBeforeFirst()) // Verifica si el ResultSet está vacío
+            throw new SQLException("No se encontraron tablas para el esquema: " + nameSchema);
+
         Table table;
         while (r.next()) {
             String tableName = r.getString("TABLE_NAME");
